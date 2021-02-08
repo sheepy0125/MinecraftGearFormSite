@@ -1,0 +1,32 @@
+<!-- Remove submission page -->
+<!-- Password is: LaCraftyIsSmelly!@#$-->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>Remove submission</h1>
+    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button><br>
+    <button type = "button" onclick = 'window.location.href = "/viewSubmissions.html";'>View orders</button><br>
+    <hr>
+
+    <!-- Make user input password -->
+    <div class = "centerText">
+
+        <form action = "/deleteOrder/{{ orderID }}" method = "POST">
+        
+            <h3>Enter master password</h3>
+            <input type = "password" name = "PasswordRemove" id = "PasswordRemove">
+
+            <input type = "submit" name = "action" value = "Remove">
+        
+        </form>
+
+    </div>
+
+{% endblock %}

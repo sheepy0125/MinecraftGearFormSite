@@ -1,0 +1,93 @@
+<!-- Form enchant page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>Select enchants</h1>
+    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button>
+    <noscript><a href = "/">Back to main</a></noscript>
+    <br>
+
+    <!-- See what the enchants the user wants -->
+    <div class = "centerText">
+        <form action = "/submit" method = "POST" onkeydown = "return event.key != 'Enter';">
+            <!-- Get username -->
+            <p>Current Minecraft Username</p>
+            <input type = "text" name = "Username" id = "Username" maxlength = "16" minlength = "3" required>
+            <br>
+
+            <!-- Get number of products that user ordered -->
+            {% for product in orderContent.items() %}
+
+                <!-- Make sure user ordered product -->
+                {% if product[1] != 0 %}
+
+                    <!-- Repeat for how many user selected for-->
+                    {% for currentProductNumber in range(product[1]) %}
+
+                        <!-- Print product and product number -->
+                        <hr>
+                        <h5>{{ product[0] }} {{ (currentProductNumber + 1) }}</h5>
+
+                        <!-- Get product name -->
+                        <p>Name of {{ product[0] }} {{ (currentProductNumber + 1) }} (leave blank for default name)</p>
+                        <input type = "text" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} Name" maxlength = "35">
+                        <br>
+
+                        <!-- Enchants -->
+
+                        <!-- Checkboxes -->
+                        {% for enchant in productDictionary[product[0]]["enchants"]["checkboxes"] %}
+
+                            <input type = "checkbox" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} {{ enchant }}">
+                            <label for = "{{ product[0] }} {{ (currentProductNumber + 1) }} {{ enchant }}">{{ enchant }}</label>
+                            <br>
+
+                        {% endfor %}
+                        
+                        <!-- Multiple selection -->
+
+                        {% for multipleSelectionList in productDictionary[product[0]]["enchants"]["multipleSelection"] %}
+                            <div class = "multipleSelection">
+
+                                {% for enchant in multipleSelectionList %}
+
+                                    <br>
+                                    <input type = "radio" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} Multiple Choice {{ multipleSelectionList }}" value = "{{ enchant }}">
+                                    <label for = "{{ product[0] }} {{ (currentProductNumber + 1) }} Multiple Choice {{ multipleSelectionList }}">{{enchant}}</label>
+
+                                {% endfor%}
+
+                            </div>
+
+                        {% endfor %}
+
+                        <!-- Additional information -->
+                        <p>Additional information</p>
+                        <input type = "text" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} Additional" maxlength = "60">
+                        <br>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endfor %}
+
+            <hr>
+            <p>You have reached the end of the form! Is there anything you would like to let me know?</p>
+            <input type = "text" name = "Additional Information" maxlength = "240">
+            <br><br><br>
+
+            <input type = "submit" name = "action" value = "Submit order!">
+
+        </form>
+
+    </div>
+
+{% endblock %}

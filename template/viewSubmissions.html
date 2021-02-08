@@ -1,0 +1,44 @@
+<!-- View submissions page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>Submissions</h1>
+    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button>
+    <noscript><a href = "/">Back to main</a></noscript>
+    <br><hr>
+    <!-- Show table with all submissions -->
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>Username</th>
+            <th>Date ordered</th>
+            <th>Options</th>
+        </tr>
+        
+        {% for order in allOrders %}
+
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.name }}</td>
+                <td>{{ order.dateCreated.date() }}</td>
+                <td>
+                    <button type = "button" onclick = 'window.location.href = "orderView/{{ order.id }}";'>View order</button>
+                    <noscript><a href = "orderView/{{ order.id }}">View order</a></noscript>
+                    <button type = "button" onclick = 'window.location.href = "removeSubmission/{{ order.id }}";'>Remove order</button>
+                    <noscript><a href = "removeSubmission/{{ order.id }}">Remove order</a></noscript>
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}

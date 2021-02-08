@@ -1,0 +1,47 @@
+<!-- Form selection page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>Ordering Form</h1>
+    <h2>Hello, and welcome to the form!</h2>
+    <h2>You will only need to choose what you would like to purchase.</h2>
+
+    <h2 class = "tinyText">Please note: Your response will be public.</h2>
+    <br>
+
+    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button>
+    <noscript><a href = "/">Back to main</a></noscript>
+    <br><hr>
+
+    <!-- See what the user wants to purchase -->
+    <div class = "centerText">
+        <form action = "/submit" method = "POST" target = "_blank" onkeydown = "return event.key != 'Enter';">
+
+            <h3>Please select which items you would like to purchase.</h3>
+
+            <!-- Get each product -->
+            {% for product in productDictionary.items() %}
+
+            <p>Number of {{ product[0] }}{% if product[0][-1] != "s" %}s{% endif %} ({{ product[1]["productCost"] }} diamonds)</p>
+            <input type = "number" name = {{ product[1]["variableName"] }} min = "0" max = "5" minlength = "1" value = "0" required>
+            <br>
+            
+            {% endfor %}
+            
+            <br>
+            <input type = "submit" name = "action" value = "Estimated cost">
+            <input type = "submit" name = "action" value = "Next page">
+
+        </form>
+        
+    </div>
+
+    
+{% endblock %}

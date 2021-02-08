@@ -1,0 +1,97 @@
+/* CSS file for all websites */
+
+/* Body and global scope */
+body, html {
+    font-family: sans-serif;
+    margin: 0 auto;
+    background-color: wheat;
+}
+
+/* Text */
+h1, h2, h3, h4, h5, p, li {
+    text-align: center; 
+    padding: 5px;
+}
+
+.tinyText {
+    font-size: small;
+    color: darkslategray;
+    width: 75%;
+    margin: 0 auto;
+}
+
+footer {
+    font-size: smaller;
+}
+
+/* Center */
+button {
+    margin: 0 auto;
+    display: block;
+    border-radius: 5px;
+}
+
+.centerText {
+    text-align: center; 
+}
+
+/* Content */
+.content {
+    margin: 0 auto;
+    width: 800px;
+    background-color: pink;
+    border-radius: 25px;
+}
+
+#content {
+    width: 70%;
+}
+
+/* Flashes */
+.flashes {
+    margin: 0 auto;
+    border-radius: 15px;
+    width: 800px;
+    background-color: rgb(255, 180, 192);
+}
+
+/* Tables */
+table, td, th {
+    background-color: white;
+    border: 2px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 90%;
+    margin: 0 auto;
+}
+
+th {
+    height: 30px;
+}
+
+td {
+    text-align: center;
+    padding: 5px;
+}
+
+/* A tags */
+a {
+    display: block;
+    text-align: center;
+}
+
+/* Form */
+form {
+    width: 90%;
+    border-radius: 15px;
+    background-color: rgb(255, 180, 192);
+    margin: 0 auto;
+}
+
+input[type = text], input[type = number] {
+    width: 25%;
+    margin: 0 auto;
+    text-align: center;
+}

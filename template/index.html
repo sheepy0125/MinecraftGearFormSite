@@ -1,0 +1,37 @@
+<!-- Landing page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>Sheepy's God Gear Shop</h1>
+    <hr>
+
+    <button type = "button" onclick = 'window.location.href = "formSelection.html";'>Form</button>
+    <noscript><a href = "formSelection.html">Form</a></noscript>
+    <br>
+
+    <button type = "button" onclick = 'window.location.href = "viewSubmissions.html";'>All Orders</button>
+    <noscript><a href = "viewSubmissions.html">All Orders</a></noscript>
+    <br>
+
+    <p>The God Gear will cost:</p>
+    <ul>
+        <li>The cost to make the gear in diamonds, or already made gear</li>
+        <li>15 diamonds per elytra</li>
+        <li>5 diamonds per order (profit)</li>
+    </ul>
+
+    <h5 class = "tinyText">Some things to note:</h5>
+    <ul>
+        <li class = "tinyText">You will only have to pay for the diamonds to make the gear (you will not have to pay 2 sticks or iron for example).</li>
+        <li class = "tinyText">If you wish to purchase other than diamond gear, you will have to drop off the gear (for example gold armor or a turtle helmet).</li>
+        <li class = "tinyText">You can only order up to 5 of an item at a time on the form (if you wish to order more, you will have to make a new form).</li>
+    </ul>
+    
+{% endblock %}

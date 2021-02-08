@@ -1,0 +1,49 @@
+<!-- View order page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>Viewing order {{ order.id }}</h1>
+
+    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button>
+    <noscript><a href = "/">Back to main</a></noscript>
+    <br>
+    <button type = "button" onclick = 'window.location.href = "/viewSubmissions.html";'>View orders</button>
+    <noscript><a href = "/viewSubmissions.html">View orders</a></noscript>
+    <br><hr>
+
+    <p>Order {{ order.id }}</p>
+    <p>Username: {{ order.name }}</p>
+    <p>Ordered on {{ order.dateCreated.date() }} at {{ order.dateCreated.time() }} UTC</p>
+
+    <!-- Show table with order -->
+    <table>
+        
+        <th>Item</th>
+        <th>Content</th>
+
+        {% for orderContent in order.content.items() %}
+        
+        <tr>
+            <td>{{ orderContent[0] }}</td>
+            <td>
+                {% for orderContent in orderContent[1].items() %}
+
+                    {{ orderContent[0] }}: {{ orderContent[1] }}
+                    <br>
+
+                {% endfor %}
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}
