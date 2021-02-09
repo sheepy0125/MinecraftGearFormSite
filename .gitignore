@@ -1,5 +1,0 @@
-*.db
-*.txt
-__pycache__/
-*.py[cod]
-*.gitignore
