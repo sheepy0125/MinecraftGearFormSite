@@ -1,0 +1,40 @@
+<!-- Enchants page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>All enchantments</h1>
+    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button>
+    <noscript><a href = "/">Back to main</a></noscript>
+    <br><hr>
+    <!-- Show table with all enchants -->
+    <table>
+        <tr>
+            <th>Enchantment</th>
+            <th>Maximum level</th>
+            <th>Purpose</th>
+            <th>Compatible items</th>
+            <th>Incompatible enchants</th>
+        </tr>
+        
+        {% for enchantment in enchantDictionary.items() %}
+
+            <tr>
+                <td>{{ enchantment[0] }}</td>
+                <td>{{ enchantment[1]["maximumLevel"] }}</td>
+                <td>{{ enchantment[1]["purpose"] }}</td>
+                <td>{{ enchantment[1]["compatibleItems"] }}</td>
+                <td>{{ enchantment[1]["incompatibleEnchants"] }}</td>
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}

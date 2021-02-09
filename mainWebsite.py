@@ -32,10 +32,17 @@ class FormOrders(mainDB.Model):
 def index():
     return flask.render_template("index.html")
 
+# Pages ===========================================================================================
+
 # Blank page
 @mainWebsite.route("/blank.html")
 def blank():
     return flask.render_template("blank.html")
+
+# List of enchants page
+@mainWebsite.route("/allEnchantments.html")
+def allEnchants():
+    return flask.render_template("allEnchantments.html", enchantDictionary = enchantDictionary)
 
 # Form related pages ==============================================================================
 
