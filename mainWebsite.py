@@ -21,18 +21,17 @@ class FormOrders(mainDB.Model):
     content = mainDB.Column(mainDB.PickleType, nullable = False)
     dateCreated = mainDB.Column(mainDB.DateTime, default = datetime.datetime.utcnow)
 
-    # Return when called
-    def __repr__(self):
-        return f"<Order {self.id}>"
+# Get diamonds to stacks
+def getDiamondsToStacks(amountOfDiamonds):
+    orderCost = f"{int(amountOfDiamonds / 64)} stacks {amountOfDiamonds % 64} diamonds"
+    return orderCost
 
-# Main ============================================================================================
+# Pages ===========================================================================================
 
 # Index page
 @mainWebsite.route("/")
 def index():
     return flask.render_template("index.html")
-
-# Pages ===========================================================================================
 
 # Blank page
 @mainWebsite.route("/blank.html")
@@ -46,19 +45,8 @@ def allEnchants():
 
 # Form related pages ==============================================================================
 
-# Get diamonds to stacks
-def getDiamondsToStacks(amountOfDiamonds):
-    orderCost = f"{int(amountOfDiamonds / 64)} stacks {amountOfDiamonds % 64} diamonds"
-    return orderCost
-
-# Selecting form
-@mainWebsite.route("/formSelection.html")
-def formSelection():
-    order = FormOrders.query.order_by(FormOrders.dateCreated).all()
-    return flask.render_template("formSelection.html", productDictionary = productDictionary, order = order)
-
-# Submit form
-@mainWebsite.route("/submit", methods = ["POST", "GET"])
+# Form and submissions
+@mainWebsite.route("/form", methods = ["POST", "GET"])
 def submit():
     # Clicked button
     if flask.request.method == "POST":
@@ -160,10 +148,10 @@ def submit():
                 flask.flash(f"Estimated total cost is {getDiamondsToStacks(orderCost)}.")
                 return flask.redirect("blank.html")
 
-    # Not submitting, but viewed page
+    # Not submitting
     else:
-        flask.flash("You have not gotten here properly. Please fill out the form first.")
-        return flask.redirect("/")
+        order = FormOrders.query.order_by(FormOrders.dateCreated).all()
+        return flask.render_template("formSelection.html", productDictionary = productDictionary, order = order)
 
 # View submissions
 @mainWebsite.route("/viewSubmissions.html")
