@@ -29,8 +29,16 @@
                 <td>{{ enchantment[0] }}</td>
                 <td>{{ enchantment[1]["maximumLevel"] }}</td>
                 <td>{{ enchantment[1]["purpose"] }}</td>
-                <td>{{ enchantment[1]["compatibleItems"] }}</td>
-                <td>{{ enchantment[1]["incompatibleEnchants"] }}</td>
+                <td>
+                    {% for compatibleItem in enchantment[1]["compatibleItems"] %}
+                        {{ compatibleItem }} <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for incompatibleEnchantment in enchantment[1]["incompatibleEnchants"] %}
+                        {{ incompatibleEnchantment }} <br>
+                    {% endfor %}
+                </td>
             </tr>
 
         {% endfor %}
