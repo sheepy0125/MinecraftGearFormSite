@@ -47,7 +47,7 @@ def allEnchants():
 
 # Form and submissions
 @mainWebsite.route("/form", methods = ["POST", "GET"])
-def submit():
+def form():
     # Clicked button
     if flask.request.method == "POST":
         # If submitting
