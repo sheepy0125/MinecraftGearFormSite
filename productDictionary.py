@@ -12,9 +12,9 @@ productDictionary = {   # Variable name                     # Product cost      
     "Crossbow":        {"variableName": "crossbowNumber",   "productCost": 0,   "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Quick charge 3"],                                               "multipleSelection": [ ["Piercing 4", "Multishot"] ] } },
     "Bow":             {"variableName": "bowNumber",        "productCost": 0,   "enchants": {"checkboxes": ["Unbreaking 3", "Power 5", "Punch 2", "Flame"],                                             "multipleSelection": [ ["Mending", "Infinity"] ] } },
     "Shears":          {"variableName": "shearsNumber",     "productCost": 0,   "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Efficiency 5"],                                                 "multipleSelection": [ [ ] ] } },
-    "Flint&Steel":     {"variableName": "flintSteelNumber", "productCost": 0,   "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
+    "Flint-&-Steel":   {"variableName": "flintSteelNumber", "productCost": 0,   "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
     "Shield":          {"variableName": "shieldNumber",     "productCost": 0,   "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
-    "Fishing Rod":     {"variableName": "fishingRodNumber", "productCost": 0,   "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Luck of the sea 3", "Lure 3"],                                  "multipleSelection": [ [ ] ] } },
+    "Fishing-Rod":     {"variableName": "fishingRodNumber", "productCost": 0,   "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Luck of the sea 3", "Lure 3"],                                  "multipleSelection": [ [ ] ] } },
     "Elytra":          {"variableName": "elytraNumber",     "productCost": 15,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
 }
 
