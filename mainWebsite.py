@@ -38,7 +38,7 @@ def index():
 def blank():
     return flask.render_template("blank.html")
 
-# List of enchants page
+# List of enchants page 
 @mainWebsite.route("/allEnchantments.html")
 def allEnchants():
     return flask.render_template("allEnchantments.html", enchantDictionary = enchantDictionary)
@@ -96,7 +96,9 @@ def form():
                             orderContentDict[orderProduct][attribute] = valueForAttribute
 
             # Additional information
-            orderContentDict["Extra"]["Additional information"] = orderContent["Additional Information"]
+            orderContentDict["Extra"]["Additional Information"] = orderContent["Additional Information"]
+            # Minecraft server
+            orderContentDict["Extra"]["Minecraft Server"] = orderContent["Minecraft Server"]
 
             # Product cost
             orderPrice = 5

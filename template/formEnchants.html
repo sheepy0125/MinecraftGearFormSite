@@ -14,13 +14,19 @@
     <noscript><a href = "/">Back to main</a></noscript>
     <br>
 
-    <!-- See what the enchants the user wants -->
     <div class = "centerText">
+        <!-- Form -->
         <form action = "/form" method = "POST" onkeydown = "return event.key != 'Enter';">
             <!-- Get username -->
             <p>Current Minecraft Username</p>
-            <input type = "text" name = "Username" id = "Username" maxlength = "16" minlength = "3" required>
+            <input type = "text" name = "Username" maxlength = "16" minlength = "3" required>
             <br>
+            <!-- Get minecraft server -->
+            <p>Minecraft Server</p>
+            <div class = "multipleSelection">
+                <input type = "radio" name = "Minecraft Server" value = "New Minecraft Server" required> <label for = "New Minecraft Server">New Minecraft Server</label> <br>
+                <input type = "radio" name = "Minecraft Server" value = "Old Minecraft Server" required> <label for = "Old Minecraft Server">Old Minecraft Server</label> <br>
+            </div>
 
             <!-- Get number of products that user ordered -->
             {% for product in orderContent.items() %}
