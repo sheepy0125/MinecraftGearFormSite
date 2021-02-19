@@ -55,7 +55,7 @@ enchantDictionary = {       # Maximum level      # Purpose                      
     "Loyalty":               {"maximumLevel": 3, "purpose": "Return trident when thrown",                              "compatibleItems": ["Trident"],                                   "incompatibleEnchants": ["Riptide"] },
     "Quick charge":          {"maximumLevel": 3, "purpose": "Reload crossbow faster",                                  "compatibleItems": ["Crossbow"],                                  "incompatibleEnchants": [] },
     "Piercing":              {"maximumLevel": 4, "purpose": "Shoot through entities with projectile",                  "compatibleItems": ["Crossbow"],                                  "incompatibleEnchants": ["Multishot"] },
-    "Multishot":             {"maximumLevel": 1, "purpose": "Shoot 3 projectiles instead of one",                      "compatibleItems": ["Crossbow"],                                  "incompatibleEnchants": ["Piercing 4"] },
+    "Multishot":             {"maximumLevel": 1, "purpose": "Shoot 3 projectiles instead of one",                      "compatibleItems": ["Crossbow"],                                  "incompatibleEnchants": ["Piercing"] },
     "Luck of the sea":       {"maximumLevel": 3, "purpose": "Higher chance of getting treasure when fishing",          "compatibleItems": ["Fishing Rod"],                               "incompatibleEnchants": [] },
     "Lure":                  {"maximumLevel": 3, "purpose": "Make fish swim to your rod faster",                       "compatibleItems": ["Fishing Rod"],                               "incompatibleEnchants": [] },
 }
