@@ -11,12 +11,9 @@
 <div class = "content">
     <h1>Viewing order {{ order.id }}</h1>
 
-    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button>
-    <noscript><a href = "/">Back to main</a></noscript>
-    <br>
-    <button type = "button" onclick = 'window.location.href = "/viewSubmissions.html";'>View orders</button>
-    <noscript><a href = "/viewSubmissions.html">View orders</a></noscript>
-    <br><hr>
+    <a href = "/" class = "button">Back to main</a> <br>
+    <a href = "/viewSubmissions.html" class = "button">View orders</a> <br>
+    <hr>
 
     <p>Order {{ order.id }}</p>
     <p>Username: {{ order.name }}</p>

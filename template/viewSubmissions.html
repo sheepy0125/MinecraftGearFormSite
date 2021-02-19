@@ -10,9 +10,8 @@
 {% block body %}
 <div class = "content">
     <h1>Submissions</h1>
-    <button type = "button" onclick = 'window.location.href = "/";'>Back to main</button>
-    <noscript><a href = "/">Back to main</a></noscript>
-    <br><hr>
+    <a href = "/" class = "button">Back to main</a> <br>
+    <hr>
     <!-- Show table with all submissions -->
     <table>
         <tr>
@@ -29,10 +28,8 @@
                 <td>{{ order.name }}</td>
                 <td>{{ order.dateCreated.date() }}</td>
                 <td>
-                    <button type = "button" onclick = 'window.location.href = "orderView/{{ order.id }}";'>View order</button>
-                    <noscript><a href = "orderView/{{ order.id }}">View order</a></noscript>
-                    <button type = "button" onclick = 'window.location.href = "removeSubmission/{{ order.id }}";'>Remove order</button>
-                    <noscript><a href = "removeSubmission/{{ order.id }}">Remove order</a></noscript>
+                    <a href = "orderView/{{ order.id }}" class = "button small_button">View order</a>
+                    <a href = "removeSubmission/{{ order.id }}" class = "button small_button">Remove order</a>
                 </td>
 
             </tr>

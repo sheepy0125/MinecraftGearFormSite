@@ -76,10 +76,27 @@ td {
     padding: 5px;
 }
 
-/* A tags */
+/* A tag */
 a {
     display: block;
     text-align: center;
+    margin: 0 auto;
+}
+
+
+/* Button */
+.button {
+    padding: 10px;
+    text-decoration: none;
+    background-color: lightslategray;
+    color: black;
+    border: 1px solid black; 
+    width: 30%;
+}
+
+.small_button {
+    padding: 1px;
+    width: 100%;
 }
 
 /* Form */
