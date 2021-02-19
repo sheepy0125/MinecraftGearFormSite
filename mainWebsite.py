@@ -111,7 +111,7 @@ def form():
 
                 orderPrice += productDictionary[productOrdered]["productCost"]
 
-            orderContentDict["Extra"]["Total Cost"] = getDiamondsToStacks(orderPrice)
+            orderContentDict["Extra"]["Estimated Cost"] = getDiamondsToStacks(orderPrice)
 
             # Submit
             formSubmission = FormOrders(content = orderContentDict, name = orderUsername)
@@ -127,7 +127,7 @@ def form():
                 return flask.redirect("/")
 
             flask.flash(f"Your order (#{formSubmission.id}) has been recieved!")
-            flask.flash(f"Please put {getDiamondsToStacks(orderPrice)} into the payment chest.")
+            flask.flash(f"Your estimated total cost is {getDiamondsToStacks(orderPrice)}. Please go to Sheepy's base to drop off payment.")
             return flask.redirect("/")
 
         # Still on first page
