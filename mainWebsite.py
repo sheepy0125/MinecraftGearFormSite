@@ -205,7 +205,7 @@ def deleteSubmission(id):
             else:
                 flask.flash(f"Password {passwordInputted} is not correct. Nice try.")
 
-    return flask.redirect(f"/removeSubmission/{id}")
+    return flask.redirect(f"/removeOrder/{id}")
 
 # Run website =====================================================================================
 if __name__ == "__main__":
