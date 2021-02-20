@@ -89,7 +89,7 @@ def form():
                             attribute = valueForAttribute
 
                         if (not "Name" in attribute) and (not "Additional" in attribute):
-                            enchantList.append(f"{attribute}")
+                            enchantList.append(attribute[1::]) if attribute.startswith(" ") else enchantList.append(attribute)
                             orderContentDict[orderProduct]["Enchantments"] = enchantList
 
                         else:
@@ -103,6 +103,7 @@ def form():
             # Product cost
             orderPrice = 5
 
+            # Get the product name (from "Sword 1" to "Sword")
             for productOrdered in orderedProducts:
                 productOrdered = productOrdered.replace(" ", "")
                 for character in productOrdered:

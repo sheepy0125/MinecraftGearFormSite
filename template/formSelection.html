@@ -29,7 +29,7 @@
             {% for product in productDictionary.items() %}
 
             <p>Number of {{ product[0] }}{% if product[0][-1] != "s" %}s{% endif %} ({{ product[1]["productCost"] }} diamonds)</p>
-            <input type = "number" name = {{ product[1]["variableName"] }} min = "0" max = "5" minlength = "1" value = "0" required>
+            <input type = "number" name = {{ product[1]["variableName"] }} min = "0" max = "{{ product[1]['maxNumberOrderable'] }}" minlength = "1" value = "0" required>
             <br>
             
             {% endfor %}
