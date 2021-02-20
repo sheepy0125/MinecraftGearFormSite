@@ -148,7 +148,7 @@ def form():
                     orderCost += int(orderedProduct[1]) * int(productDictionary[orderedProduct[0]]["productCost"])
 
                 flask.flash(f"Estimated total cost is {getDiamondsToStacks(orderCost)}.")
-                return flask.redirect("blank.html")
+                return flask.redirect("/blank")
 
     # Not submitting
     else:
