@@ -9,7 +9,7 @@
 <!-- Body -->
 {% block body %}
 <div class = "content">
-    <h1>Submissions</h1>
+    <h1>All Orders</h1>
     <a href = "/" class = "button">Back to main</a> <br>
     <hr>
     <!-- Show table with all submissions -->
@@ -28,8 +28,8 @@
                 <td>{{ order.name }}</td>
                 <td>{{ order.dateCreated.date() }}</td>
                 <td>
-                    <a href = "orderView/{{ order.id }}" class = "button small_button">View order</a>
-                    <a href = "removeSubmission/{{ order.id }}" class = "button small_button">Remove order</a>
+                    <a href = "viewOrder/{{ order.id }}" class = "button small_button">View order</a>
+                    <a href = "removeOrder/{{ order.id }}" class = "button small_button">Remove order</a>
                 </td>
 
             </tr>

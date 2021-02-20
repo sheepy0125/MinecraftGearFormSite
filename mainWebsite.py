@@ -34,12 +34,12 @@ def index():
     return flask.render_template("index.html")
 
 # Blank page
-@mainWebsite.route("/blank.html")
+@mainWebsite.route("/blank")
 def blank():
     return flask.render_template("blank.html")
 
 # List of enchants page 
-@mainWebsite.route("/allEnchantments.html")
+@mainWebsite.route("/allEnchantments")
 def allEnchants():
     return flask.render_template("allEnchantments.html", enchantDictionary = enchantDictionary)
 
@@ -156,19 +156,19 @@ def form():
         return flask.render_template("formSelection.html", productDictionary = productDictionary, order = order)
 
 # View submissions
-@mainWebsite.route("/viewSubmissions.html")
-def viewSubmissions():
+@mainWebsite.route("/viewAllOrders")
+def viewAllOrders():
     allOrders = FormOrders.query.order_by(FormOrders.dateCreated).all()
     return flask.render_template("viewSubmissions.html", allOrders = allOrders)
 
 # View order
-@mainWebsite.route("/orderView/<int:id>")
+@mainWebsite.route("/viewOrder/<int:id>")
 def orderView(id):
     order = FormOrders.query.filter_by(id = id).first()
     return flask.render_template("orderView.html", order = order)
 
 # Delete submission enter password
-@mainWebsite.route("/removeSubmission/<int:id>")
+@mainWebsite.route("/removeOrder/<int:id>")
 def removeSubmissionEnterPassword(id):
     return flask.render_template("removeSubmission.html", orderID = id)
 
@@ -199,7 +199,7 @@ def deleteSubmission(id):
                 except:
                     flask.flash(f"There was a problem removing order {id}")
 
-                return flask.redirect("/viewSubmissions.html")
+                return flask.redirect("/viewAllOrders")
 
             # Password doesn't match
             else:
