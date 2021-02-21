@@ -26,6 +26,19 @@ def getDiamondsToStacks(amountOfDiamonds):
     orderCost = f"{int(amountOfDiamonds / 64)} stacks {amountOfDiamonds % 64} diamonds"
     return orderCost
 
+# Error handling ==================================================================================
+
+# Page not found
+@mainWebsite.errorhandler(404)
+def pageNotFoundError(error):
+    return flask.render_template("pageNotFound.html"), 404
+
+# Internal server error
+@mainWebsite.errorhandler(500)
+def internalServerError(error):
+    return flask.render_template("internalServerError.html"), 500
+
+
 # Pages ===========================================================================================
 
 # Index page
@@ -166,12 +179,29 @@ def viewAllOrders():
 @mainWebsite.route("/viewOrder/<int:id>")
 def orderView(id):
     order = FormOrders.query.filter_by(id = id).first()
-    return flask.render_template("orderView.html", order = order)
+
+    # Make sure the order is valid
+    if order is not None:
+        return flask.render_template("orderView.html", order = order)
+
+    # Order is not valid
+    else:
+        flask.flash(f"Order ID {id} is not valid.")
+        return flask.redirect("/viewAllOrders")
 
 # Delete submission enter password
 @mainWebsite.route("/removeOrder/<int:id>")
 def removeSubmissionEnterPassword(id):
-    return flask.render_template("removeSubmission.html", orderID = id)
+    order = FormOrders.query.filter_by(id = id).first()
+
+    # Make sure the order is valid
+    if order is not None:
+        return flask.render_template("removeSubmission.html", orderID = id, order = order)
+
+    # Order is not valid
+    else:
+        flask.flash(f"Order ID {id} is not valid.")
+        return flask.redirect("/viewAllOrders")
 
 # Delete submission
 @mainWebsite.route("/deleteOrder/<int:id>", methods = ["POST", "GET"])
@@ -210,5 +240,6 @@ def deleteSubmission(id):
 
 # Run website =====================================================================================
 if __name__ == "__main__":
-    mainWebsite.run(debug = True)
+    # mainWebsite.run(debug = True)
+    mainWebsite.run(debug = False)
     # mainWebsite.run(host = "0.0.0.0", port = 5001)

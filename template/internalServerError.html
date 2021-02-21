@@ -1,0 +1,19 @@
+<!-- Internal server error page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>500: Internal server error.</h1>
+    <h3>That's... not good...</h3>
+    
+    <a href = "/" class = "button">Back to main</a>
+
+    <br><hr>
+
+{% endblock %}
