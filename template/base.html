@@ -10,6 +10,16 @@
         <link rel = "stylesheet", href = "{{ url_for('static', filename='css/style.css') }}">
 
         <title>Sheepy's God Gear Services</title>
+
+        <!-- If JavaScript is disabled, hide JavaScript only items -->
+        <noscript>
+            <style>
+                .javascriptOnly {
+                    display: none;
+                }
+            </style>
+        </noscript>
+
         {% block head %}{% endblock %}
     </head>
 
