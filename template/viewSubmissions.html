@@ -10,7 +10,7 @@
 {% block body %}
 <div class = "content">
     <h1>All Orders</h1>
-    <a href = "/" class = "button">Back to main</a> <br>
+    <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br>
     <hr>
     <!-- Show table with all submissions -->
     <table>
@@ -28,8 +28,8 @@
                 <td>{{ order.name }}</td>
                 <td>{{ order.dateCreated.date() }}</td>
                 <td>
-                    <a href = "viewOrder/{{ order.id }}" class = "button small_button">View order</a>
-                    <a href = "removeOrder/{{ order.id }}" class = "button small_button">Remove order</a>
+                    <form method = "GET" action = "/viewOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">View order</button> </form>
+                    <form method = "GET" action = "/removeOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">Remove order</button> </form>
                 </td>
 
             </tr>

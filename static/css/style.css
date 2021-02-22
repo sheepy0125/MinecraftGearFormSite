@@ -76,16 +76,11 @@ td {
     padding: 5px;
 }
 
-/* A tag */
-a {
+/* Button */
+.button {
     display: block;
     text-align: center;
     margin: 0 auto;
-}
-
-
-/* Button */
-.button {
     padding: 10px;
     text-decoration: none;
     background-color: lightslategray;
@@ -100,7 +95,7 @@ a {
 }
 
 /* Form */
-form {
+.form {
     width: 90%;
     border-radius: 15px;
     background-color: rgb(255, 180, 192);

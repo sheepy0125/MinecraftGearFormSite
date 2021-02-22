@@ -240,6 +240,6 @@ def deleteSubmission(id):
 
 # Run website =====================================================================================
 if __name__ == "__main__":
-    # mainWebsite.run(debug = True)
-    mainWebsite.run(debug = False)
+    mainWebsite.run(debug = True)
+    # mainWebsite.run(debug = False)
     # mainWebsite.run(host = "0.0.0.0", port = 5001)

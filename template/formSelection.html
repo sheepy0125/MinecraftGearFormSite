@@ -16,12 +16,11 @@
     <h2 class = "tinyText">Please note: Your response will be public.</h2>
     <br>
 
-    <a href = "/" class = "button">Back to main</a>
-    <br><hr>
+    <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br> <hr>
 
     <!-- See what the user wants to purchase -->
     <div class = "centerText">
-        <form action = "/form" method = "POST" target = "_blank" onkeydown = "return event.key != 'Enter';" id = "selectionForm">
+        <form action = "/form" method = "POST" target = "_blank" onkeydown = "return event.key != 'Enter';" id = "selectionForm" class = "form">
 
             <h3>Please select which items you would like to purchase.</h3>
 

@@ -11,8 +11,8 @@
 <div class = "content">
     <h1>Viewing order {{ order.id }}</h1>
 
-    <a href = "/" class = "button">Back to main</a> <br>
-    <a href = "/viewAllOrders" class = "button">View orders</a> <br>
+    <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br>
+    <form method = "GET" action = "/viewAllOrders"> <button type = "submit" class = "button">View orders</button> </form> <br>
     <hr>
 
     <p>Order {{ order.id }}</p>
