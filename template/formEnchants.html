@@ -69,6 +69,9 @@
 
                                 {% endfor%}
 
+                                <!-- Clear selection button (JavaScript only) -->
+                                <button type = "button" class = "button button_clear_selection javascriptOnly" onclick = "clearRadioGroup(`{{ product[0] }} {{ (currentProductNumber + 1) }} Multiple Choice {{ multipleSelectionList }}`);">Clear selection</button>
+
                             </div>
 
                         {% endfor %}
@@ -94,5 +97,19 @@
         </form>
 
     </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Clear radio selection group
+        function clearRadioGroup(radioGroup) {
+            // Get radio buttons
+            var radioButtons = document.getElementsByName(radioGroup);
+
+            // Set each radio button to false
+            for (var index = 0; index < radioButtons.length; index++) {
+                radioButtons[index].checked = false;
+            }
+        }
+    </script>
 
 {% endblock %}

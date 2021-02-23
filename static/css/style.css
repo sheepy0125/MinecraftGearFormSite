@@ -94,6 +94,13 @@ td {
     width: 100%;
 }
 
+.button_clear_selection {
+    padding: 0px;
+    width: 100px;
+    border: 1px solid black;
+    background-color: inherit;
+}
+
 /* Form */
 .form {
     width: 90%;
