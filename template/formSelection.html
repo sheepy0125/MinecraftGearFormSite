@@ -35,10 +35,8 @@
             
             <br>
 
-            <!-- Estimated cost button -->
+            <!-- Estimated cost -->
             <h4 id = "estimatedCostDisplay"></h4>
-            <button type = "button" class = "button javascript_only" name = "Estimated cost button">Estimated cost</button><br>
-
             <!-- If JavaScript is not enabled, have the estimated cost on the submit button -->
             <noscript>
                 <button type = "submit" name = "action" value = "Estimated cost" class = "button">Estimated Cost</button><br>
@@ -53,27 +51,31 @@
 
     <!-- JavaScript -->
     <script>
-        // Estimated cost button
-        var estimatedCostButton = document.getElementsByName("Estimated cost button");
-        estimatedCostButton[0].addEventListener("click", getEstimatedCost)
+        // Estimated cost
 
+        // Prices based off of variable name... yeah...
+        // Note: 0 diamond products are not included
+        const prices = {
+            "swordNumber":      2,
+            "pickaxeNumber":    3,
+            "shovelNumber":     1,
+            "axeNumber":        3,
+            "hoeNumber":        2,
+            "helmetNumber":     5,
+            "chestplateNumber": 8,
+            "leggingsNumber":   7,
+            "bootsNumber":      4,
+            "elytraNumber":     15
+        }
+
+        // Add event listeners so whenever user changes something it updates estimated cost
+        for (var product in prices) {
+            var productUpdate = document.getElementsByName(product);
+            productUpdate[0].addEventListener("change", getEstimatedCost)
+        }
+        
         // Get estimated cost
         function getEstimatedCost() {
-            // Prices based off of variable name... yeah...
-            // Note: 0 diamond products are not included
-            var prices = {
-                "swordNumber":      2,
-                "pickaxeNumber":    3,
-                "shovelNumber":     1,
-                "axeNumber":        3,
-                "hoeNumber":        2,
-                "helmetNumber":     5,
-                "chestplateNumber": 8,
-                "leggingsNumber":   7,
-                "bootsNumber":      4,
-                "elytraNumber":     15
-            }
-            
             // Get how much ordered
             var totalCost = 5;
             for (var product in prices) {
@@ -89,6 +91,9 @@
             // Display
             document.getElementById("estimatedCostDisplay").innerHTML = `Estimated total cost is ${Math.trunc(totalCost / 64)} stacks ${(totalCost % 64)} diamonds.`;
         }
+        
+        // On startup of page, get estimated cost
+        getEstimatedCost();
         
     </script>
 
