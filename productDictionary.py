@@ -1,5 +1,5 @@
 # Products
-productDictionary = {   # Variable name                     # Product cost     # Maximum num orderable   # Enchants  # Checkboxes                                                                                                # Multiple selection
+product_dictionary = {   # Variable name                     # Product cost     # Maximum num orderable   # Enchants  # Checkboxes                                                                                                # Multiple selection
     "Sword":           {"variableName": "swordNumber",      "productCost": 2,  "maxNumberOrderable": 5,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Sweeping Edge 3", "Looting 3", "Knockback 2", "Fire aspect 2"], "multipleSelection": [ ["Sharpness 5", "Smite 5", "Bane of Arthropods 5" ] ] } },
     "Pickaxe":         {"variableName": "pickaxeNumber",    "productCost": 3,  "maxNumberOrderable": 5,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Efficiency 5"],                                                 "multipleSelection": [ ["Silk touch", "Fortune 3"] ] } },
     "Shovel":          {"variableName": "shovelNumber",     "productCost": 1,  "maxNumberOrderable": 5,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Efficiency 5"],                                                 "multipleSelection": [ ["Silk touch", "Fortune 3"] ] } },
@@ -19,7 +19,7 @@ productDictionary = {   # Variable name                     # Product cost     #
 }
 
 # Enchants
-enchantDictionary = {       # Maximum level      # Purpose                                                             # Compatible items                                                # Incompatible enchants
+enchant_dictionary = {       # Maximum level      # Purpose                                                             # Compatible items                                                # Incompatible enchants
     "Mending":               {"maximumLevel": 1, "purpose": "Repair the item with experience",                         "compatibleItems": ["Everything"],                                "incompatibleEnchants": ["Infinity"] },
     "Unbreaking":            {"maximumLevel": 3, "purpose": "Less durability used",                                    "compatibleItems": ["Everything"],                                "incompatibleEnchants": [] },
     "Curse of binding":      {"maximumLevel": 1, "purpose": "Make it impossible to unequip item",                      "compatibleItems": ["Everything"],                                "incompatibleEnchants": [] },

@@ -7,34 +7,34 @@ import datetime
 from productDictionary import *
 
 # Setup website
-mainWebsite = flask.Flask(__name__, template_folder = "template")
-mainWebsite.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///ordering.db"
-mainDB = flask_sqlalchemy.SQLAlchemy(mainWebsite)
-with open ("secretKey.txt") as secretKeyText:
-    mainWebsite.secret_key = secretKeyText.read()
+main_website = flask.Flask(__name__, template_folder = "template")
+main_website.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///ordering.db"
+main_database = flask_sqlalchemy.SQLAlchemy(main_website)
+with open ("secretKey.txt") as secret_key_text:
+    main_website.secret_key = secret_key_text.read()
 
 # Form order class
-class FormOrders(mainDB.Model):
+class FormOrders(main_database.Model):
     # Setup
-    id = mainDB.Column(mainDB.Integer, primary_key = True)
-    name = mainDB.Column(mainDB.String(20), nullable = False)
-    content = mainDB.Column(mainDB.PickleType, nullable = False)
-    dateCreated = mainDB.Column(mainDB.DateTime, default = datetime.datetime.utcnow)
+    id = main_database.Column(main_database.Integer, primary_key = True)
+    name = main_database.Column(main_database.String(20), nullable = False)
+    content = main_database.Column(main_database.PickleType, nullable = False)
+    dateCreated = main_database.Column(main_database.DateTime, default = datetime.datetime.utcnow)
 
 # Get diamonds to stacks
-def getDiamondsToStacks(amountOfDiamonds):
-    orderCost = f"{int(amountOfDiamonds / 64)} stacks {amountOfDiamonds % 64} diamonds"
+def get_diamonds_to_stacks(amount_of_diamonds):
+    orderCost = f"{int(amount_of_diamonds / 64)} stacks {amount_of_diamonds % 64} diamonds"
     return orderCost
 
 # Error handling ==================================================================================
 
 # Page not found
-@mainWebsite.errorhandler(404)
+@main_website.errorhandler(404)
 def pageNotFoundError(error):
     return flask.render_template("pageNotFound.html"), 404
 
 # Internal server error
-@mainWebsite.errorhandler(500)
+@main_website.errorhandler(500)
 def internalServerError(error):
     return flask.render_template("internalServerError.html"), 500
 
@@ -42,141 +42,141 @@ def internalServerError(error):
 # Pages ===========================================================================================
 
 # Index page
-@mainWebsite.route("/")
+@main_website.route("/")
 def index():
     return flask.render_template("index.html")
 
 # Blank page
-@mainWebsite.route("/blank")
+@main_website.route("/blank")
 def blank():
     return flask.render_template("blank.html")
 
 # List of enchants page 
-@mainWebsite.route("/allEnchantments")
+@main_website.route("/allEnchantments")
 def allEnchants():
-    return flask.render_template("allEnchantments.html", enchantDictionary = enchantDictionary)
+    return flask.render_template("allEnchantments.html", enchantDictionary = enchant_dictionary)
 
 # Form related pages ==============================================================================
 
 # Form and submissions
-@mainWebsite.route("/form", methods = ["POST", "GET"])
+@main_website.route("/form", methods = ["POST", "GET"])
 def form():
     # Clicked button
     if flask.request.method == "POST":
         # If submitting
         if flask.request.form["action"] == "Submit order!":
             # Get all data
-            orderContent = flask.request.form
+            order_content = flask.request.form
             orderUsername = flask.request.form["Username"]
 
             # Make data look pretty
-            orderContentDict = {}
-            orderContentDict["Extra"] = {}
-            orderedProducts = []
+            order_content_dict = {}
+            order_content_dict["Extra"] = {}
+            ordered_products = []
 
             # Get all products
-            for productName in productDictionary.keys():
+            for product_name in product_dictionary.keys():
                 # Iterate through each field in order content
-                for orderAttribute in orderContent.items():
+                for order_attribute in order_content.items():
                     # Get value for field
-                    valueForAttribute = orderAttribute[1]
+                    value_for_attribute = order_attribute[1]
 
                     # If the name is in the current field
-                    if productName in orderAttribute[0]:
+                    if product_name in order_attribute[0]:
                         # Make it show just enchantment and enchant number
-                        orderProduct = productName
-                        for character in orderAttribute[0]:
+                        order_product = product_name
+                        for character in order_attribute[0]:
                             if character.isnumeric():
-                                orderProduct += f" {character}"
+                                order_product += f" {character}"
                                 break
 
                         # Initialize the product if it hasn't been
-                        if orderProduct not in orderedProducts:
-                            orderContentDict[orderProduct] = {}
-                            orderedProducts.append(orderProduct)
-                            enchantList = []
+                        if order_product not in ordered_products:
+                            order_content_dict[order_product] = {}
+                            ordered_products.append(order_product)
+                            enchant_list = []
 
-                        attribute = orderAttribute[0].replace(orderProduct, "")
+                        attribute = order_attribute[0].replace(order_product, "")
 
                         if "Multiple Choice" in attribute:
-                            attribute = valueForAttribute
+                            attribute = value_for_attribute
 
                         if (not "Name" in attribute) and (not "Additional" in attribute):
-                            enchantList.append(attribute[1::]) if attribute.startswith(" ") else enchantList.append(attribute)
-                            orderContentDict[orderProduct]["Enchantments"] = enchantList
+                            enchant_list.append(attribute[1::]) if attribute.startswith(" ") else enchant_list.append(attribute)
+                            order_content_dict[order_product]["Enchantments"] = enchant_list
 
                         else:
-                            orderContentDict[orderProduct][attribute] = valueForAttribute
+                            order_content_dict[order_product][attribute] = value_for_attribute
 
             # Additional information
-            orderContentDict["Extra"]["Additional Information"] = orderContent["Additional Information"]
+            order_content_dict["Extra"]["Additional Information"] = order_content["Additional Information"]
             # Minecraft server
-            orderContentDict["Extra"]["Minecraft Server"] = orderContent["Minecraft Server"]
+            order_content_dict["Extra"]["Minecraft Server"] = order_content["Minecraft Server"]
 
             # Product cost
-            orderPrice = 5
+            order_price = 5
 
             # Get the product name (from "Sword 1" to "Sword")
-            for productOrdered in orderedProducts:
+            for productOrdered in ordered_products:
                 productOrdered = productOrdered.replace(" ", "")
                 for character in productOrdered:
                     if character.isnumeric():
                         productOrdered = productOrdered.strip(character)
 
-                orderPrice += productDictionary[productOrdered]["productCost"]
+                order_price += product_dictionary[productOrdered]["productCost"]
 
-            orderContentDict["Extra"]["Estimated Cost"] = getDiamondsToStacks(orderPrice)
+            order_content_dict["Extra"]["Estimated Cost"] = get_diamonds_to_stacks(order_price)
 
             # Submit
-            formSubmission = FormOrders(content = orderContentDict, name = orderUsername)
+            form_submission = FormOrders(content = order_content_dict, name = orderUsername)
 
             # Save to database
             try:
-                mainDB.session.add(formSubmission)
-                mainDB.session.commit()
+                main_database.session.add(form_submission)
+                main_database.session.commit()
 
             # Error happened
             except:
                 flask.flash("There was a problem with submitting your order! Please contact Pink_Sheepy.")
                 return flask.redirect("/")
 
-            flask.flash(f"Your order (#{formSubmission.id}) has been recieved!")
-            flask.flash(f"Your estimated total cost is {getDiamondsToStacks(orderPrice)}. Please go to Sheepy's base to drop off payment.")
+            flask.flash(f"Your order (#{form_submission.id}) has been recieved!")
+            flask.flash(f"Your estimated total cost is {get_diamonds_to_stacks(order_price)}. Please go to Sheepy's base to drop off payment.")
             return flask.redirect("/")
 
         # Still on first page
         else:
-            orderContent = {}
-            for product in productDictionary.items():
-                orderContent[product[0]] = int(flask.request.form[product[1]["variableName"]])
+            order_content = {}
+            for product in product_dictionary.items():
+                order_content[product[0]] = int(flask.request.form[product[1]["variableName"]])
 
             # Going to next page
             if flask.request.form["action"] == "Next page":
-                return flask.render_template("formEnchants.html", orderContent = orderContent, productDictionary = productDictionary)
+                return flask.render_template("formEnchants.html", orderContent = order_content, productDictionary = product_dictionary)
 
             # Just getting price
             elif flask.request.form["action"] == "Estimated cost":
-                orderCost = 5
+                order_cost = 5
 
-                for orderedProduct in orderContent.items():
-                    orderCost += int(orderedProduct[1]) * int(productDictionary[orderedProduct[0]]["productCost"])
+                for ordered_product in order_content.items():
+                    order_cost += int(ordered_product[1]) * int(product_dictionary[ordered_product[0]]["productCost"])
 
-                flask.flash(f"Estimated total cost is {getDiamondsToStacks(orderCost)}.")
+                flask.flash(f"Estimated total cost is {get_diamonds_to_stacks(order_cost)}.")
                 return flask.redirect("/blank")
 
     # Not submitting
     else:
         order = FormOrders.query.order_by(FormOrders.dateCreated).all()
-        return flask.render_template("formSelection.html", productDictionary = productDictionary, order = order)
+        return flask.render_template("formSelection.html", productDictionary = product_dictionary, order = order)
 
 # View submissions
-@mainWebsite.route("/viewAllOrders")
+@main_website.route("/viewAllOrders")
 def viewAllOrders():
-    allOrders = FormOrders.query.order_by(FormOrders.dateCreated).all()
-    return flask.render_template("viewSubmissions.html", allOrders = allOrders)
+    all_orders = FormOrders.query.order_by(FormOrders.dateCreated).all()
+    return flask.render_template("viewSubmissions.html", allOrders = all_orders)
 
 # View order
-@mainWebsite.route("/viewOrder/<int:id>")
+@main_website.route("/viewOrder/<int:id>")
 def orderView(id):
     order = FormOrders.query.filter_by(id = id).first()
 
@@ -190,7 +190,7 @@ def orderView(id):
         return flask.redirect("/viewAllOrders")
 
 # Delete submission enter password
-@mainWebsite.route("/removeOrder/<int:id>")
+@main_website.route("/removeOrder/<int:id>")
 def removeSubmissionEnterPassword(id):
     order = FormOrders.query.filter_by(id = id).first()
 
@@ -204,26 +204,26 @@ def removeSubmissionEnterPassword(id):
         return flask.redirect("/viewAllOrders")
 
 # Delete submission
-@mainWebsite.route("/deleteOrder/<int:id>", methods = ["POST", "GET"])
+@main_website.route("/deleteOrder/<int:id>", methods = ["POST", "GET"])
 def deleteSubmission(id):
     # If removing
     if flask.request.method == "POST":
-        orderToDelete = FormOrders.query.get_or_404(id)
+        order_to_delete = FormOrders.query.get_or_404(id)
 
         # Check password
-        passwordInputted = flask.request.form["PasswordRemove"]
+        password_inputted = flask.request.form["PasswordRemove"]
 
         # Easter egg
-        if passwordInputted == "LaCraftyIsSmelly!@#$":
+        if password_inputted == "LaCraftyIsSmelly!@#$":
             flask.flash("Your password is the truth.")
 
-        with open ("password.txt") as realPasswordText:
+        with open ("password.txt") as real_password_text:
             # Password matches
-            if passwordInputted == realPasswordText.read():
+            if password_inputted == real_password_text.read():
                 # Attempt to remove
                 try:
-                    mainDB.session.delete(orderToDelete)
-                    mainDB.session.commit()
+                    main_database.session.delete(order_to_delete)
+                    main_database.session.commit()
                     flask.flash(f"Successfully deleted order {id}")
 
                 # Failed to remove
@@ -234,12 +234,12 @@ def deleteSubmission(id):
 
             # Password doesn't match
             else:
-                flask.flash(f"Password {passwordInputted} is not correct. Nice try.")
+                flask.flash(f"Password {password_inputted} is not correct. Nice try.")
 
     return flask.redirect(f"/removeOrder/{id}")
 
 # Run website =====================================================================================
 if __name__ == "__main__":
-    mainWebsite.run(debug = True)
+    main_website.run(debug = True)
     # mainWebsite.run(debug = False)
     # mainWebsite.run(host = "0.0.0.0", port = 5001)
