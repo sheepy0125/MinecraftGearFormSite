@@ -26,7 +26,7 @@
             <tr>
                 <td>{{ order.id }}</td>
                 <td>{{ order.name }}</td>
-                <td>{{ order.dateCreated.date() }}</td>
+                <td>{{ (order.dateCreated + timedelta(hours = -5)).date() }}</td>
                 <td>
                     <form method = "GET" action = "/viewOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">View order</button> </form>
                     <form method = "GET" action = "/removeOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">Remove order</button> </form>

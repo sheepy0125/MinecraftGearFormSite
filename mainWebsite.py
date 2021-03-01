@@ -173,7 +173,7 @@ def form():
 @main_website.route("/viewAllOrders")
 def viewAllOrders():
     all_orders = FormOrders.query.order_by(FormOrders.dateCreated).all()
-    return flask.render_template("viewSubmissions.html", allOrders = all_orders)
+    return flask.render_template("viewSubmissions.html", allOrders = all_orders, timedelta = datetime.timedelta)
 
 # View order
 @main_website.route("/viewOrder/<int:id>")
@@ -182,7 +182,7 @@ def orderView(id):
 
     # Make sure the order is valid
     if order is not None:
-        return flask.render_template("orderView.html", order = order)
+        return flask.render_template("orderView.html", order = order, timedelta = datetime.timedelta)
 
     # Order is not valid
     else:
@@ -241,5 +241,5 @@ def deleteSubmission(id):
 # Run website =====================================================================================
 if __name__ == "__main__":
     main_website.run(debug = True)
-    # mainWebsite.run(debug = False)
-    # mainWebsite.run(host = "0.0.0.0", port = 5001)
+    # main_website.run(debug = False)
+    # main_website.run(host = "0.0.0.0", port = 5001)
