@@ -21,11 +21,7 @@
     <!-- Change date created to timezone -->
     {% set date_created_shift = (order.dateCreated + timedelta(hours = -5)) %}
     {% if date_created_shift.hour < 12 %} {% set am_or_pm = "AM" %} {% else %} {% set am_or_pm = "PM" %} {% endif %}
-    <p>
-        Ordered on {{ date_created_shift.date() }} at 
-        {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{{ date_created_shift.minute }}
-        {{ am_or_pm }} EST
-    </p>
+    <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EST</p>
     <!-- Show table with order -->
     <table>
         
