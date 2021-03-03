@@ -15,6 +15,7 @@ product_dictionary = {   # Variable name                     # Product cost     
     "Flint-&-Steel":   {"variableName": "flintSteelNumber", "productCost": 0,  "maxNumberOrderable": 3,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
     "Shield":          {"variableName": "shieldNumber",     "productCost": 0,  "maxNumberOrderable": 3,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
     "Fishing-Rod":     {"variableName": "fishingRodNumber", "productCost": 0,  "maxNumberOrderable": 3,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3", "Luck of the sea 3", "Lure 3"],                                  "multipleSelection": [ [ ] ] } },
+    "Carrot-on-Stick": {"variableName": "carrotOnStick",    "productCost": 0,  "maxNumberOrderable": 3,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
     "Elytra":          {"variableName": "elytraNumber",     "productCost": 15, "maxNumberOrderable": 5,  "enchants": {"checkboxes": ["Mending", "Unbreaking 3"],                                                                 "multipleSelection": [ [ ] ] } },
 }
 
