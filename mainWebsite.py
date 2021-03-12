@@ -23,19 +23,19 @@ class FormOrders(main_database.Model):
 
 # Get diamonds to stacks
 def get_diamonds_to_stacks(amount_of_diamonds):
-    orderCost = f"{int(amount_of_diamonds / 64)} stacks {amount_of_diamonds % 64} diamonds"
-    return orderCost
+    order_cost = f"{int(amount_of_diamonds / 64)} stacks {amount_of_diamonds % 64} diamonds"
+    return order_cost
 
 # Error handling ==================================================================================
 
 # Page not found
 @main_website.errorhandler(404)
-def pageNotFoundError(error):
+def page_not_found(error):
     return flask.render_template("pageNotFound.html"), 404
 
 # Internal server error
 @main_website.errorhandler(500)
-def internalServerError(error):
+def internal_server_error(error):
     return flask.render_template("internalServerError.html"), 500
 
 
@@ -53,7 +53,7 @@ def blank():
 
 # List of enchants page 
 @main_website.route("/allEnchantments")
-def allEnchants():
+def all_enchants():
     return flask.render_template("allEnchantments.html", enchantDictionary = enchant_dictionary)
 
 # Form related pages ==============================================================================
@@ -67,7 +67,7 @@ def form():
         if flask.request.form["action"] == "Submit order!":
             # Get all data
             order_content = flask.request.form
-            orderUsername = flask.request.form["Username"]
+            order_username = flask.request.form["Username"]
 
             # Make data look pretty
             order_content_dict = {}
@@ -117,18 +117,18 @@ def form():
             order_price = 5
 
             # Get the product name (from "Sword 1" to "Sword")
-            for productOrdered in ordered_products:
-                productOrdered = productOrdered.replace(" ", "")
-                for character in productOrdered:
+            for product_ordered in ordered_products:
+                product_ordered = product_ordered.replace(" ", "")
+                for character in product_ordered:
                     if character.isnumeric():
-                        productOrdered = productOrdered.strip(character)
+                        product_ordered = product_ordered.strip(character)
 
-                order_price += product_dictionary[productOrdered]["productCost"]
+                order_price += product_dictionary[product_ordered]["productCost"]
 
             order_content_dict["Extra"]["Estimated Cost"] = get_diamonds_to_stacks(order_price)
 
             # Submit
-            form_submission = FormOrders(content = order_content_dict, name = orderUsername)
+            form_submission = FormOrders(content = order_content_dict, name = order_username)
 
             # Save to database
             try:
@@ -171,13 +171,13 @@ def form():
 
 # View submissions
 @main_website.route("/viewAllOrders")
-def viewAllOrders():
+def view_all_orders():
     all_orders = FormOrders.query.order_by(FormOrders.dateCreated).all()
     return flask.render_template("viewSubmissions.html", allOrders = all_orders, timedelta = datetime.timedelta)
 
 # View order
 @main_website.route("/viewOrder/<int:id>")
-def orderView(id):
+def view_order(id):
     order = FormOrders.query.filter_by(id = id).first()
 
     # Make sure the order is valid
@@ -191,7 +191,7 @@ def orderView(id):
 
 # Delete submission enter password
 @main_website.route("/removeOrder/<int:id>")
-def removeSubmissionEnterPassword(id):
+def remove_order_password_enter(id):
     order = FormOrders.query.filter_by(id = id).first()
 
     # Make sure the order is valid
@@ -205,7 +205,7 @@ def removeSubmissionEnterPassword(id):
 
 # Delete submission
 @main_website.route("/deleteOrder/<int:id>", methods = ["POST", "GET"])
-def deleteSubmission(id):
+def delete_order(id):
     # If removing
     if flask.request.method == "POST":
         order_to_delete = FormOrders.query.get_or_404(id)
