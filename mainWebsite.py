@@ -218,8 +218,25 @@ def delete_order(id):
             flask.flash("Your password is the truth.")
 
         with open ("password.txt") as real_password_text:
+            real_password_text = real_password_text.readlines()
+            encrypted_password = ""
+            
+            # Get the encrypted password
+            character_count = 0
+
+            for character in real_password_text[0]:
+                character_ascii_num = ord(character)
+
+                if character_count % int(real_password_text[3]) != 0:
+                    character_ascii_num += int(real_password_text[1])
+                else:
+                    character_ascii_num += int(real_password_text[2])
+
+                if character_ascii_num > 32: encrypted_password += str(chr(character_ascii_num) + real_password_text[4])
+                else: encrypted_password += str(character_count)
+
             # Password matches
-            if password_inputted == real_password_text.read():
+            if password_inputted == encrypted_password:
                 # Attempt to remove
                 try:
                     main_database.session.delete(order_to_delete)
