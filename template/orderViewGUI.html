@@ -34,7 +34,7 @@
 
             <!-- Product name -->
             <p>Name of {{ orderContent[0] }}</p>
-            <input type = "text" class = "text_input" placeholder = "{{ orderContent[1][' Name'] }}" disabled>
+            <input type = "text" class = "text_input" value = "{{ orderContent[1][' Name'] }}" disabled>
 
             <!-- Checkboxes -->
             <br>
@@ -69,9 +69,10 @@
             {% endfor %}
 
             <!-- Multiple selection -->
-            <br>
 
             {% for enchantList in product_dictionary[(orderContent[0][:-2])]["enchants"]["multipleSelection"] %}
+
+                <br>
 
                 {% for multipleSelectionEnchant in enchantList %}
 
@@ -103,11 +104,11 @@
 
                 {% endfor %}
 
+            {% endfor %}
+
             <!-- Additional information -->
             <p>Additional Information</p>
-            <input type = "text" class = "text_input" placeholder = "{{ orderContent[1][' Additional'] }}" disabled>
-
-            {% endfor %}
+            <input type = "text" class = "text_input" value = "{{ orderContent[1][' Additional'] }}" disabled>
 
             <hr>
 
@@ -128,5 +129,20 @@
     {% endfor %}
 
     </form>
+
+    <!-- Disclaimer -->
+    <h1>Important Note</h1>
+    <h3>This is an experimental order viewing tool.</h3>
+    <form method = "GET" action = "/viewOrderNoGUI/{{ order.id }}"> <button type = "submit" class = "button">Take me back!</button> </form> 
+
+    <!-- JavaScript -->
+    <script>
+        // Make disabled items black and not gray
+        input_items = document.getElementsByTagName("input");
+
+        for (var index = 0; index < input_items.length; index++) {
+            input_items[index].style.color = "black";
+        }
+    </script>
 
 {% endblock %}

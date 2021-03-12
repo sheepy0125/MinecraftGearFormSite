@@ -175,19 +175,35 @@ def view_all_orders():
     all_orders = FormOrders.query.order_by(FormOrders.dateCreated).all()
     return flask.render_template("viewSubmissions.html", allOrders = all_orders, timedelta = datetime.timedelta)
 
+# Make sure order is valid
+def check_if_order_is_valid(order):
+    if order is not None:
+        return True
+    else:
+        flask.flash(f"Order ID {id} is not valid.")
+        return flask.redirect("/viewAllOrders")
+
 # View order
 @main_website.route("/viewOrder/<int:id>")
 def view_order(id):
     order = FormOrders.query.filter_by(id = id).first()
 
-    # Make sure the order is valid
-    if order is not None:
-        return flask.render_template("orderViewGUI.html", order = order, timedelta = datetime.timedelta, product_dictionary = product_dictionary)
+    if check_if_order_is_valid(order):
+        # Try to show GUI
+        try: return flask.render_template("orderViewGUI.html", order = order, timedelta = datetime.timedelta, product_dictionary = product_dictionary)
+        # Failed, so revert to old
+        except: 
+            flask.flash("There was an error accessing the new view order page.")
+            return flask.redirect(f"/viewOrderNoGUI/{id}")
 
-    # Order is not valid
-    else:
-        flask.flash(f"Order ID {id} is not valid.")
-        return flask.redirect("/viewAllOrders")
+# View order (NO GUI)
+@main_website.route("/viewOrderNoGUI/<int:id>")
+def view_order_no_gui(id):
+    order = FormOrders.query.filter_by(id = id).first()
+
+    if check_if_order_is_valid(order):
+        return flask.render_template("orderView.html", order = order, timedelta = datetime.timedelta)
+
 
 # Delete submission enter password
 @main_website.route("/removeOrder/<int:id>")
