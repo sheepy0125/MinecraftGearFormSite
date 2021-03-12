@@ -31,7 +31,7 @@ button {
     border-radius: 5px;
 }
 
-.centerText {
+.center_text {
     text-align: center; 
 }
 
@@ -121,11 +121,6 @@ input[type = text], input[type = number], .text_input {
     margin: 0 auto;
     display: block;
     text-align: center;
-}
-
-::placeholder {
-    color: black;
-    opacity: 1;
 }
 
 /* Loading */

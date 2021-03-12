@@ -19,13 +19,13 @@
     <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br> <hr>
 
     <!-- See what the user wants to purchase -->
-    <div class = "centerText">
-        <form action = "/form" method = "POST" target = "_blank" onkeydown = "return event.key != 'Enter';" id = "selectionForm" class = "form">
+    <div class = "center_text">
+        <form action = "/form" method = "POST" target = "_blank" onkeydown = "return event.key != 'Enter';" id = "selection_form" class = "form">
 
             <h3>Please select which items you would like to purchase.</h3>
 
             <!-- Get each product -->
-            {% for product in productDictionary.items() %}
+            {% for product in product_dictionary.items() %}
 
             <p>Number of {{ product[0] }}{% if product[0][-1] != "s" %}s{% endif %} ({{ product[1]["productCost"] }} diamonds)</p>
             <input type = "number" name = {{ product[1]["variableName"] }} min = "0" max = "{{ product[1]['maxNumberOrderable'] }}" minlength = "1" value = "0" required>
@@ -71,29 +71,29 @@
         // Add event listeners so whenever user changes something it updates estimated cost
         for (var product in prices) {
             var productUpdate = document.getElementsByName(product);
-            productUpdate[0].addEventListener("change", getEstimatedCost)
+            productUpdate[0].addEventListener("change", get_estimated_cost)
         }
         
         // Get estimated cost
-        function getEstimatedCost() {
+        function get_estimated_cost() {
             // Get how much ordered
-            var totalCost = 5;
+            var total_cost = 5;
             for (var product in prices) {
-                var productCost = prices[product];
+                var product_cost = prices[product];
 
                 // See how much user ordered
-                var userOrderedNum = document.getElementsByName(product)[0].value;
+                var user_ordered_num = document.getElementsByName(product)[0].value;
 
                 // Add diamonds needed
-                totalCost = totalCost + (productCost * userOrderedNum);
+                total_cost = total_cost + (product_cost * user_ordered_num);
             }
 
             // Display
-            document.getElementById("estimatedCostDisplay").innerHTML = `Estimated total cost is ${Math.trunc(totalCost / 64)} stacks ${(totalCost % 64)} diamonds.`;
+            document.getElementById("estimatedCostDisplay").innerHTML = `Estimated total cost is ${Math.trunc(total_cost / 64)} stacks ${(total_cost % 64)} diamonds.`;
         }
         
         // On startup of page, get estimated cost
-        getEstimatedCost();
+        get_estimated_cost();
         
     </script>
 

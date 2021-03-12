@@ -152,7 +152,7 @@ def form():
 
             # Going to next page
             if flask.request.form["action"] == "Next page":
-                return flask.render_template("formEnchants.html", orderContent = order_content, productDictionary = product_dictionary)
+                return flask.render_template("formEnchants.html", order_content = order_content, product_dictionary = product_dictionary)
 
             # Just getting price
             elif flask.request.form["action"] == "Estimated cost":
@@ -167,7 +167,7 @@ def form():
     # Not submitting
     else:
         order = FormOrders.query.order_by(FormOrders.dateCreated).all()
-        return flask.render_template("formSelection.html", productDictionary = product_dictionary, order = order)
+        return flask.render_template("formSelection.html", product_dictionary = product_dictionary, order = order)
 
 # View submissions
 @main_website.route("/viewAllOrders")

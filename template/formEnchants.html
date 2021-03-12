@@ -13,7 +13,7 @@
     <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br>
     <br>
 
-    <div class = "centerText">
+    <div class = "center_text">
         <!-- Form -->
         <form action = "/form" method = "POST" onkeydown = "return event.key != 'Enter';" class = "form" autocomplete = "off">
             <!-- Get username -->
@@ -22,57 +22,69 @@
             <br>
             <!-- Get minecraft server -->
             <p>Minecraft Server</p>
-            <div class = "multipleSelection">
-                <input type = "radio" name = "Minecraft Server" value = "New Minecraft Server" required checked> <label for = "New Minecraft Server">New Minecraft Server</label> <br>
-                <input type = "radio" name = "Minecraft Server" value = "Old Minecraft Server" required> <label for = "Old Minecraft Server">Old Minecraft Server</label> <br>
+            <div class = "multiple_selection">
+                <label>
+                    <input type = "radio" name = "Minecraft Server" value = "New Minecraft Server" required checked>
+                    New Minecraft Server
+                </label> <br>
+                <label>
+                    <input type = "radio" name = "Minecraft Server" value = "Old Minecraft Server" required>
+                    Old Minecraft Server
+                </label> <br>
             </div>
 
             <!-- Get number of products that user ordered -->
-            {% for product in orderContent.items() %}
+            {% for product in order_content.items() %}
 
                 <!-- Make sure user ordered product -->
                 {% if product[1] != 0 %}
 
                     <!-- Repeat for how many user selected for-->
-                    {% for currentProductNumber in range(product[1]) %}
+                    {% for current_product_number in range(product[1]) %}
 
                         <!-- Print product and product number -->
                         <hr>
-                        <h5>{{ product[0] }} {{ (currentProductNumber + 1) }}</h5>
+                        <h5>{{ product[0] }} {{ (current_product_number + 1) }}</h5>
 
                         <!-- Get product name -->
-                        <p>Name of {{ product[0] }} {{ (currentProductNumber + 1) }} (leave blank for default name)</p>
-                        <input type = "text" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} Name" maxlength = "35">
+                        <p>Name of {{ product[0] }} {{ (current_product_number + 1) }} (leave blank for default name)</p>
+                        <input type = "text" name = "{{ product[0] }} {{ (current_product_number + 1) }} Name" maxlength = "35">
                         <br>
 
                         <!-- Enchants -->
 
                         <!-- Checkboxes -->
-                        {% for enchant in productDictionary[product[0]]["enchants"]["checkboxes"] %}
+                        {% for enchant in product_dictionary[product[0]]["enchants"]["checkboxes"] %}
 
-                            <input type = "checkbox" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} {{ enchant }}">
-                            <label for = "{{ product[0] }} {{ (currentProductNumber + 1) }} {{ enchant }}">{{ enchant }}</label>
+                            <label>
+                                <input type = "checkbox" name = "{{ product[0] }} {{ (current_product_number + 1) }} {{ enchant }}">
+                                {{ enchant }}
+                            </label>
+
                             <br>
 
                         {% endfor %}
                         
                         <!-- Multiple selection -->
 
-                        {% for multipleSelectionList in productDictionary[product[0]]["enchants"]["multipleSelection"] %}
-                            <div class = "multipleSelection">
+                        {% for multiple_selection_list in product_dictionary[product[0]]["enchants"]["multipleSelection"] %}
 
-                                {% for enchant in multipleSelectionList %}
+                            <div class = "multiple_selection">
+
+                                {% for enchant in multiple_selection_list %}
 
                                     <br>
-                                    <input type = "radio" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} Multiple Choice {{ multipleSelectionList }}" value = "{{ enchant }}">
-                                    <label for = "{{ product[0] }} {{ (currentProductNumber + 1) }} Multiple Choice {{ multipleSelectionList }}">{{enchant}}</label>
+                                    <label>
+                                        <input type = "radio" name = "{{ product[0] }} {{ (current_product_number + 1) }} Multiple Choice {{ multiple_selection_list }}" value = "{{ enchant }}">
+                                        {{ enchant }}
+                                    </label>
 
-                                {% endfor%}
+                                {% endfor %}
 
                                 <!-- Clear selection button (JavaScript only) -->
                                 <!-- Make sure that the multiple selection list contains items -->
-                                {% if multipleSelectionList != [] %}
-                                    <br> <button type = "button" class = "button button_clear_selection javascript_only" onclick = "clearRadioGroup(`{{ product[0] }} {{ (currentProductNumber + 1) }} Multiple Choice {{ multipleSelectionList }}`);">Clear selection</button>
+                                {% if multiple_selection_list != [] %}
+                                    <br> <button type = "button" class = "button button_clear_selection javascript_only" onclick = "clear_radio_group(`{{ product[0] }} {{ (current_product_number + 1) }} Multiple Choice {{ multiple_selection_list }}`);">Clear selection</button>
                                 {% endif %}
 
                             </div>
@@ -81,7 +93,7 @@
 
                         <!-- Additional information -->
                         <p>Additional information</p>
-                        <input type = "text" name = "{{ product[0] }} {{ (currentProductNumber + 1) }} Additional" maxlength = "60">
+                        <input type = "text" name = "{{ product[0] }} {{ (current_product_number + 1) }} Additional" maxlength = "60">
                         <br>
 
                     {% endfor %}
@@ -104,13 +116,13 @@
     <!-- JavaScript -->
     <script>
         // Clear radio selection group
-        function clearRadioGroup(radioGroup) {
+        function clear_radio_group(radio_group) {
             // Get radio buttons
-            var radioButtons = document.getElementsByName(radioGroup);
+            var radio_buttons = document.getElementsByName(radio_group);
 
             // Set each radio button to false
-            for (var index = 0; index < radioButtons.length; index++) {
-                radioButtons[index].checked = false;
+            for (var index = 0; index < radio_buttons.length; index++) {
+                radio_buttons[index].checked = false;
             }
         }
     </script>

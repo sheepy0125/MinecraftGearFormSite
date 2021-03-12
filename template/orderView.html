@@ -31,14 +31,14 @@
         <th>Item</th>
         <th>Content</th>
 
-        {% for orderContent in order.content.items() %}
+        {% for order_content in order.content.items() %}
         
         <tr>
-            <td>{{ orderContent[0] }}</td>
+            <td>{{ order_content[0] }}</td>
             <td>
-                {% for orderContent in orderContent[1].items() %}
+                {% for order_content in order_content[1].items() %}
 
-                    {{ orderContent[0] }}: {{ orderContent[1] }}
+                    {{ order_content[0] }}: {{ order_content[1] }}
                     <br>
 
                 {% endfor %}

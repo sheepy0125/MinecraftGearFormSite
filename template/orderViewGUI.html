@@ -27,23 +27,23 @@
     <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EST</p>
 
     <!-- Iterate through each item in order -->
-    {% for orderContent in order.content.items() %}
+    {% for order_content in order.content.items() %}
 
         <!-- The item is an item -->
-        {% if orderContent[0] != "Extra" %}
+        {% if order_content[0] != "Extra" %}
 
             <!-- Product name -->
-            <p>Name of {{ orderContent[0] }}</p>
-            <input type = "text" class = "text_input" value = "{{ orderContent[1][' Name'] }}" disabled>
+            <p>Name of {{ order_content[0] }}</p>
+            <input type = "text" class = "text_input" value = "{{ order_content[1][' Name'] }}" disabled>
 
             <!-- Checkboxes -->
             <br>
             
-            {% for checkboxEnchant in product_dictionary[(orderContent[0][:-2])]["enchants"]["checkboxes"] %}
+            {% for checkboxEnchant in product_dictionary[(order_content[0][:-2])]["enchants"]["checkboxes"] %}
 
                 {% set match.bool = false %}
 
-                {% for selectedEnchant in orderContent[1]["Enchantments"] %}
+                {% for selectedEnchant in order_content[1]["Enchantments"] %}
                     {% if selectedEnchant == checkboxEnchant %}
                         {% set match.bool = true %}
                     {% endif %}
@@ -54,7 +54,7 @@
 
                     <label>
 
-                        <input type = "checkbox" name = "{{ orderContent[0] }} {{ checkboxEnchant }}" disabled
+                        <input type = "checkbox" name = "{{ order_content[0] }} {{ checkboxEnchant }}" disabled
                         {% if match.bool == True %}
                             checked
                         {% endif %}
@@ -70,7 +70,7 @@
 
             <!-- Multiple selection -->
 
-            {% for enchantList in product_dictionary[(orderContent[0][:-2])]["enchants"]["multipleSelection"] %}
+            {% for enchantList in product_dictionary[(order_content[0][:-2])]["enchants"]["multipleSelection"] %}
 
                 <br>
 
@@ -78,7 +78,7 @@
 
                     {% set match.bool = false %}
 
-                    {% for selectedEnchant in orderContent[1]["Enchantments"] %}
+                    {% for selectedEnchant in order_content[1]["Enchantments"] %}
 
                         {% if selectedEnchant == multipleSelectionEnchant %}
                             {% set match.bool = true %}
@@ -90,7 +90,7 @@
                         
                         <label>
 
-                            <input type = "radio" name = "{{ orderContent[0] }} {{ enchantList }}" disabled
+                            <input type = "radio" name = "{{ order_content[0] }} {{ enchantList }}" disabled
                             {% if match.bool == True %}
                                 checked
                             {% endif %}
@@ -108,14 +108,14 @@
 
             <!-- Additional information -->
             <p>Additional Information</p>
-            <input type = "text" class = "text_input" value = "{{ orderContent[1][' Additional'] }}" disabled>
+            <input type = "text" class = "text_input" value = "{{ order_content[1][' Additional'] }}" disabled>
 
             <hr>
 
         <!-- Extra (special) -->
         {% else %}
 
-            {% for item in orderContent[1].items() %}
+            {% for item in order_content[1].items() %}
 
                 <p>{{ item[0] }}: {{ item[1] }}</p>
 
