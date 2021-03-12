@@ -110,8 +110,20 @@ td {
     margin: 0 auto;
 }
 
-input[type = text], input[type = number] {
+input[type = text], input[type = number], .text_input {
     width: 25%;
     margin: 0 auto;
+    display: block;
     text-align: center;
+}
+
+.checkbox {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+::placeholder {
+    color: black;
+    opacity: 1;
 }

@@ -182,7 +182,7 @@ def orderView(id):
 
     # Make sure the order is valid
     if order is not None:
-        return flask.render_template("orderView.html", order = order, timedelta = datetime.timedelta)
+        return flask.render_template("orderViewGUI.html", order = order, timedelta = datetime.timedelta, product_dictionary = product_dictionary)
 
     # Order is not valid
     else:

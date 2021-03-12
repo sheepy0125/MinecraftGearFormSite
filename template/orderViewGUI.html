@@ -1,0 +1,132 @@
+<!-- View order page with a nice GUI -->
+
+<!-- Create matched namespace variable -->
+{% set match = namespace(bool = false) %}
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+
+<div class = "content">
+    <h1>Viewing order {{ order.id }}</h1>
+
+    <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br>
+    <form method = "GET" action = "/viewAllOrders"> <button type = "submit" class = "button">View orders</button> </form> <br>
+    <hr>
+
+    <p>Order {{ order.id }}</p>
+    <p>Username: {{ order.name }}</p>
+    <!-- Change date created to timezone -->
+    {% set date_created_shift = (order.dateCreated + timedelta(hours = -5)) %}
+    {% if date_created_shift.hour < 12 %} {% set am_or_pm = "AM" %} {% else %} {% set am_or_pm = "PM" %} {% endif %}
+    <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EST</p>
+
+    <!-- Iterate through each item in order -->
+    {% for orderContent in order.content.items() %}
+
+        <!-- The item is an item -->
+        {% if orderContent[0] != "Extra" %}
+
+            <!-- Product name -->
+            <p>Name of {{ orderContent[0] }}</p>
+            <input type = "text" class = "text_input" placeholder = "{{ orderContent[1][' Name'] }}" disabled>
+
+            <!-- Checkboxes -->
+            <br>
+            
+            {% for checkboxEnchant in product_dictionary[(orderContent[0][:-2])]["enchants"]["checkboxes"] %}
+
+                {% set match.bool = false %}
+
+                {% for selectedEnchant in orderContent[1]["Enchantments"] %}
+                    {% if selectedEnchant == checkboxEnchant %}
+                        {% set match.bool = true %}
+                    {% endif %}
+
+                {% endfor %}
+
+                <div class = "checkbox">
+
+                    <label>
+
+                        <input type = "checkbox" name = "{{ orderContent[0] }} {{ checkboxEnchant }}" disabled
+                        {% if match.bool == True %}
+                            checked
+                        {% endif %}
+                        >
+
+                        {{ checkboxEnchant }}
+
+                    </label>
+                    
+                </div>
+
+            {% endfor %}
+
+            <!-- Multiple selection -->
+            <br>
+
+            {% for enchantList in product_dictionary[(orderContent[0][:-2])]["enchants"]["multipleSelection"] %}
+
+                {% for multipleSelectionEnchant in enchantList %}
+
+                    {% set match.bool = false %}
+
+                    {% for selectedEnchant in orderContent[1]["Enchantments"] %}
+
+                        {% if selectedEnchant == multipleSelectionEnchant %}
+                            {% set match.bool = true %}
+                        {% endif %}
+
+                    {% endfor %}
+
+                    <div class = "checkbox">
+                        
+                        <label>
+
+                            <input type = "radio" name = "{{ orderContent[0] }} {{ enchantList }}" disabled
+                            {% if match.bool == True %}
+                                checked
+                            {% endif %}
+                            >
+
+                            {{ multipleSelectionEnchant }}
+
+                        </label>                        
+
+                    </div>
+
+                {% endfor %}
+
+            <!-- Additional information -->
+            <p>Additional Information</p>
+            <input type = "text" class = "text_input" placeholder = "{{ orderContent[1][' Additional'] }}" disabled>
+
+            {% endfor %}
+
+            <hr>
+
+        <!-- Extra (special) -->
+        {% else %}
+
+            {% for item in orderContent[1].items() %}
+
+                <p>{{ item[0] }}: {{ item[1] }}</p>
+
+            {% endfor %}
+
+            <!-- So... Extra will start at beginning. So, we start our form here. -->
+            <form class = "form">
+
+        {% endif %}
+
+    {% endfor %}
+
+    </form>
+
+{% endblock %}
