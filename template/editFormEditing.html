@@ -1,0 +1,395 @@
+<!-- Editing page -->
+<!-- Heavily based off of orderViewGUI.html -->
+
+<!-- Create matched namespace variable -->
+{% set match = namespace(bool = false) %}
+
+<!-- Create number namespace variable -->
+{% set num = namespace(count = 0) %}
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}
+
+<!-- JavaScript -->
+<script>
+    // Product dictionary
+   var product_dictionary_js = {{ product_dictionary | tojson }};
+   // Add number ordered
+   for (product in product_dictionary_js) {
+       product_dictionary_js[product]["numberOrdered"] = 0;
+   }
+
+    // Toggle add item
+    var toggle_add_item = false;
+
+    // Concert &amp; to &
+    function convert_amp_to_ampersand(text) {
+        return text.replace("&amp;", "&");
+    }
+
+    // Change number ordered
+    function change_number_ordered(product_name_and_number, change_by) {
+        product = product_name_and_number.slice(0, -2);
+        product = convert_amp_to_ampersand(product);
+        product_dictionary_js[product]["numberOrdered"] += change_by;
+    }
+
+    // Clear radio selection group
+    function clear_radio_group(radio_group) {
+        // Get radio buttons
+        var radio_buttons = document.getElementsByName(radio_group);
+
+        // Set each radio button to false
+        for (var index = 0; index < radio_buttons.length; index++) {
+            radio_buttons[index].checked = false;
+        }
+    }
+
+    // Delete item
+    function remove_item(item_to_delete, product_number) {
+        // Remove div
+        var divs_to_remove = document.getElementsByClassName(`${item_to_delete} ${product_number}`);
+
+        for (var index = 0; index < divs_to_remove.length; index++) {
+            divs_to_remove[index].remove();
+        }
+
+        // Subtract one for number ordered
+        change_number_ordered(`${item_to_delete} ${product_number}`, -1);
+
+        // Re-make delete buttons
+        check_remove_buttons();
+
+        // Reset list of items to add
+        toggle_add_item = !toggle_add_item;
+        add_item_selection();
+    }
+
+    // Add item multiple selection
+    function add_item_selection() {
+        // Change the toggle
+        toggle_add_item = !toggle_add_item;
+
+        // Get the div
+        div_multiple_selection = document.getElementsByClassName("add_item_multiple_selection form")[0];
+
+        // If toggled
+        if (toggle_add_item) {
+            // Variable for checking if any items were here
+            var items_bool = false;
+
+            div_multiple_selection.innerHTML = `<h3>Choose an item to add.</h3>`;
+
+            // Iterate through each product
+            for (var product in product_dictionary_js) {
+                // Get stats of product
+                product_stats = product_dictionary_js[product];
+                
+                // See if the product can be ordered
+                if (product_stats["maxNumberOrderable"] > product_stats["numberOrdered"]) {
+                    // Add multiple selection
+                    div_multiple_selection.innerHTML += `<br><button type = "button" class = "button small_button" onclick = "add_item('${product}', '${product_stats["numberOrdered"] + 1}');" style = "width: 50%; height: 45px; background-color: pink;">${product} ${product_stats["numberOrdered"] + 1}</button>`;
+                
+                    items_bool = true;
+                }
+            }
+
+            // If no items
+            if (!items_bool) {
+                div_multiple_selection.innerHTML = `<h3>You have the maximum amount of items already!</h3>`
+            }
+        }
+        // If not toggled
+        else {
+            div_multiple_selection.innerHTML = ``;
+        }
+    }
+    
+    // Check remove buttons
+    function check_remove_buttons() {
+        // Iterate through each product user can order
+        for (product in product_dictionary_js) {
+            // Get the numer ordered
+            var number_ordered = product_dictionary_js[product]["numberOrdered"];
+            
+            // Make sure that the number ordered is greater than 0
+            if (number_ordered > 0) {
+                // Get the div for that
+                var div_remove_button = document.getElementsByClassName(`remove_button ${product} ${number_ordered}`)[0];
+
+                // Change the div for that
+                var html_code = `<br><button type = "button" class = "button" onclick = "remove_item('${product}', ${number_ordered})">Delete ${product} ${number_ordered}</button>`;
+                div_remove_button.innerHTML = html_code;
+
+                // Get rid of other order buttons
+                for (item_number = number_ordered - 1; item_number > 0; item_number -= 1) {
+                    var div_remove_button_to_remove = document.getElementsByClassName(`remove_button ${product} ${item_number}`)[0];
+                    div_remove_button_to_remove.innerHTML = ``;
+                } 
+            }
+        }
+    }
+
+    // Add item
+    function add_item(item_to_add, item_number) {
+        // Create div
+        var product_div = document.getElementsByClassName(`${item_to_add}`)[0];
+        var new_div = document.createElement(`div`);
+        new_div.className = `${item_to_add} ${item_number}`;
+        product_div.appendChild(new_div)
+
+        // Add HTML
+        new_div.innerHTML = `
+        <h5>${item_to_add} ${item_number}</h5>
+
+        <!-- Product name -->
+        <p>Name of ${item_to_add} ${item_number} (leave blank for default name)</p>
+        <input type = "text" class = "text_input">
+
+        <!-- Checkboxes -->
+        <br>
+
+        `;
+        for (checkbox_enchant in product_dictionary_js[item_to_add]["enchants"]["checkboxes"]) {
+            checkbox_enchant = product_dictionary_js[item_to_add]["enchants"]["checkboxes"][checkbox_enchant];
+            new_div.innerHTML += `
+            <div class = "checkbox">
+
+                <label>
+
+                    <input type = "checkbox" name = "${item_to_add} ${item_number} ${checkbox_enchant}">
+
+                    ${checkbox_enchant}
+
+                </label>
+
+            </div>
+            `;
+        }
+
+        new_div.innerHTML += `<!-- Multiple selection -->`;
+        for (enchant_list in product_dictionary_js[item_to_add]["enchants"]["multipleSelection"]) {
+            new_div.innerHTML += `<br>`
+            enchant_list = product_dictionary_js[item_to_add]["enchants"]["multipleSelection"][enchant_list];
+            for (multiple_selection_enchant in enchant_list) {
+                multiple_selection_enchant = enchant_list[multiple_selection_enchant];
+                new_div.innerHTML += `
+                <div class = "multiple_selection">
+                    
+                    <label>
+
+                        <input type = "radio" name = "${item_to_add} ${enchant_list}" >
+
+                        ${multiple_selection_enchant}
+
+                    </label>                        
+
+                </div>
+                `;
+            }
+
+            new_div.innerHTML += `<!-- Make sure that the multiple selection list contains items -->`;
+            if (enchant_list != []) {
+                new_div.innerHTML += `<br> <button type = "button" class = "button button_clear_selection" onclick = "clear_radio_group(\`${item_to_add} ${item_number} ${enchant_list}\`);">Clear selection</button>`;
+            }
+        }
+
+        new_div.innerHTML += `
+
+        <!-- Additional information -->
+        <p>Additional Information</p>
+        <input type = "text" class = "text_input">
+
+        <!-- Remove button -->
+        <div class = "remove_button ${item_to_add} ${item_number}"> </div>
+
+        <hr>`;
+
+        // Change number ordered
+        change_number_ordered(`${item_to_add} ${item_number}`, 1);
+
+        // Reset remove buttons
+        check_remove_buttons();
+
+        // Reset list of items to add
+        toggle_add_item = false;
+        add_item_selection();
+    }
+</script>
+
+{% endblock %}
+
+<!-- Body -->
+{% block body %}
+
+<div class = "content">
+    <h1>Editing order {{ order.id }}</h1>
+
+    <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br>
+    <form method = "GET" action = "/viewAllOrders"> <button type = "submit" class = "button">View orders</button> </form> <br>
+    <hr>
+
+    <button type = "button" class = "button" onclick = "add_item_selection();">Add item</button>
+    <br><div class = "add_item_multiple_selection form"></div>
+
+    <form class = "form" action = "/form" method = "POST">
+
+        <!-- Get username -->
+        <p>Current Minecraft Username</p>
+        <input type = "text" name = "Username" maxlength = "16" minlength = "3" value = "{{ order.name }}" required>
+        <br>
+        <!-- Get minecraft server -->
+        <!-- Everyone is going to use new Minecraft server, just have it checked /shrug -->
+        <p>Minecraft Server</p>
+        <div class = "multiple_selection">
+            <label>
+                <input type = "radio" name = "Minecraft Server" value = "New Minecraft Server" required checked>
+                New Minecraft Server
+            </label> <br>
+            <label>
+                <input type = "radio" name = "Minecraft Server" value = "Old Minecraft Server" required>
+                Old Minecraft Server
+            </label> <br>
+        </div>
+
+        <br><br><hr>
+        <!-- Iterate through each product -->
+        {% for product in product_dictionary %}
+
+            <div class = "{{ product }}">
+
+                <!-- Iterate through each item in order -->
+                {% for order_content in order.content.items() %}
+
+                    <!-- The item is an item that matches the product -->
+                    {% if order_content[0][:-2] == product %}
+
+                        <!-- Increase number ordered -->
+                        <script>change_number_ordered("{{ order_content[0] }}", 1);</script>
+
+                        <div class = "{{ order_content[0] }}">
+
+                            <h5>{{ order_content[0] }}</h5>
+
+                            <!-- Product name -->
+                            <p>Name of {{ order_content[0] }} (leave blank for default name)</p>
+                            <input type = "text" class = "text_input" name = "{{ order_content[0] }} Name" value = "{{ order_content[1][' Name'] }}">
+
+                            <!-- Checkboxes -->
+                            <br>
+                            
+                            {% for checkbox_enchant in product_dictionary[(order_content[0][:-2])]["enchants"]["checkboxes"] %}
+
+                                {% set match.bool = false %}
+
+                                {% for selectedEnchant in order_content[1]["Enchantments"] %}
+                                    {% if selectedEnchant == checkbox_enchant %}
+                                        {% set match.bool = true %}
+                                    {% endif %}
+
+                                {% endfor %}
+
+                                <div class = "checkbox">
+
+                                    <label>
+
+                                        <input type = "checkbox" name = "{{ order_content[0] }} {{ checkbox_enchant }}"
+                                        {% if match.bool == True %}
+                                            checked
+                                        {% endif %}
+                                        >
+
+                                        {{ checkbox_enchant }}
+
+                                    </label>
+                                    
+                                </div>
+
+                            {% endfor %}
+
+                            <!-- Multiple selection -->
+
+                            {% for enchant_list in product_dictionary[(order_content[0][:-2])]["enchants"]["multipleSelection"] %}
+
+                                <br>
+
+                                {% for multiple_selection_enchant in enchant_list %}
+
+                                    {% set match.bool = false %}
+
+                                    {% for selectedEnchant in order_content[1]["Enchantments"] %}
+
+                                        {% if selectedEnchant == multiple_selection_enchant %}
+                                            {% set match.bool = true %}
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                    <div class = "multiple_selection">
+                                        
+                                        <label>
+
+                                            <input type = "radio" name = "{{ order_content[0] }} Multiple Choice {{ enchant_list }}"
+                                            {% if match.bool == True %}
+                                                checked
+                                            {% endif %}
+                                            >
+
+                                            {{ multiple_selection_enchant }}
+
+                                        </label>                        
+
+                                    </div>
+
+                                {% endfor %}
+
+                                <!-- Make sure that the multiple selection list contains items -->
+                                {% if multiple_selection_list != [] %}
+                                    <br> <button type = "button" class = "button button_clear_selection" onclick = "clear_radio_group(`{{ order_content[0] }} Multiple Choice {{ enchant_list }}`);">Clear selection</button>
+                                {% endif %}
+
+                            {% endfor %}
+
+                            <!-- Additional information -->
+                            <p>Additional Information</p>
+                            <input type = "text" class = "text_input" name = "{{ order_content[0] }} Aditional" value = "{{ order_content[1][' Additional'] }}">
+
+                            <!-- Remove button -->
+                            <div class = "remove_button {{ order_content[0] }}"> </div>
+                            
+                            <hr>
+                        
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        {% endfor %}
+
+        <p>You have reached the end of the form! Is there anything you would like to let me know?</p>
+        <input type = "text" name = "Additional Information" maxlength = "240" value = "{{ order.content['Extra']['Additional Information'] }}">
+        <br>
+
+        <label class = "checkbox">
+            <input type = "checkbox" name = "Priority">
+            Prioritize order (+10 diamonds)
+        </label>
+        <br>
+
+        <!-- Get ID -->
+        <input type = "input" name = "FormID" value = "{{ order.id }}" class = "hidden">
+
+        <button type = "submit" name = "action" value = "Re-submit order!" class = "button">Re-submit order!</button>
+
+    </form>
+
+    <!-- Check remove buttons -->
+    <script>check_remove_buttons();</script>
+
+{% endblock %}

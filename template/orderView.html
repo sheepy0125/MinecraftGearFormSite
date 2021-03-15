@@ -1,7 +1,5 @@
 <!-- View order page -->
-<!-- Note: This has been depreceated and is no longer being used. -->
-<!-- I have switched from this to a nicer one that looks like the form itself. -->
-
+<!-- This page does not have the new GUI, look at orderViewGUI.html-->
 
 <!-- Use base.html -->
 {% extends "base.html" %} 
@@ -19,12 +17,16 @@
     <form method = "GET" action = "/viewAllOrders"> <button type = "submit" class = "button">View orders</button> </form> <br>
     <hr>
 
+    <p><strong>Status: {{ order.status }}</strong></p>
+    <p><strong>Prioritize: {{ order.priority }}</strong></p>
     <p>Order {{ order.id }}</p>
     <p>Username: {{ order.name }}</p>
+
     <!-- Change date created to timezone -->
-    {% set date_created_shift = (order.dateCreated + timedelta(hours = -5)) %}
+    {% set date_created_shift = (order.date_created + timedelta(hours = -4)) %}
     {% if date_created_shift.hour < 12 %} {% set am_or_pm = "AM" %} {% else %} {% set am_or_pm = "PM" %} {% endif %}
-    <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EST</p>
+    <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EDT</p>
+    
     <!-- Show table with order -->
     <table>
         
@@ -48,5 +50,8 @@
         {% endfor %}
 
     </table>
+
+    <!-- Get raw data hyperlink -->
+    <br><br><a href = "/getRawData/{{ order.id }}" class = "center">Get raw data of order (ADMIN ONLY)</a>
 
 {% endblock %}

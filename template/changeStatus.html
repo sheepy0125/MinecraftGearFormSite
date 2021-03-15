@@ -1,0 +1,69 @@
+<!-- Change status page -->
+
+<!-- Use base.html -->
+{% extends "base.html" %} 
+
+<!-- Head -->
+{% block head %}{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<div class = "content">
+    <h1>Change status on order {{ order.id }} ({{ order.name }})</h1>
+    <form method = "GET" action = "/"> <button type = "submit" class = "button">Back to main</button> </form> <br>
+    <form method = "GET" action = "/viewOrder/{{ order.id }}"> <button type = "submit" class = "button">Back to view order</button> </form> <br>
+    <hr>
+
+    <!-- Make user input password -->
+    <div class = "center_text">
+
+        <form class = "form" action = "/changeStatus/{{ order.id }}" method = "POST">
+
+            <h3>Current stauts: {{ order.status }}</h3>
+
+            <h3>Choose status to change to</h3>
+            <div class = "multiple_selection">
+
+                <label>
+                    <input type = "radio" name = "status_change" value = "Recieved"
+                    {% if order.status == "Recieved" %}
+                    checked
+                    {% endif %}>
+                    Recieved
+                </label>
+
+                <label>
+                    <input type = "radio" name = "status_change" value = "Gathering enchantments"
+                    {% if order.status == "Gathering enchantments" %}
+                    checked
+                    {% endif %}>
+                    Gathering enchantments
+                </label>
+
+                <label>
+                    <input type = "radio" name = "status_change" value = "Enchanting"
+                    {% if order.status == "Enchanting" %}
+                    checked
+                    {% endif %}>
+                    Enchanting
+                </label>
+
+                <label>
+                    <input type = "radio" name = "status_change" value = "Completed"
+                    {% if order.status == "Completed" %}
+                    checked
+                    {% endif %}>
+                    Completed
+                </label>
+
+            </div>
+        
+            <h3>Enter master password</h3>
+            <input type = "password" name = "PasswordStatusChange" id = "PasswordStatusChange">
+            <input type = "submit" name = "action" value = "Change status">
+        
+        </form>
+
+    </div>
+
+{% endblock %}

@@ -19,12 +19,15 @@
     <form method = "GET" action = "/viewAllOrders"> <button type = "submit" class = "button">View orders</button> </form> <br>
     <hr>
 
+    <p><strong>Status: {{ order.status }}</strong></p>
+    <p><strong>Prioritize: {{ order.priority }}</strong></p>
     <p>Order {{ order.id }}</p>
     <p>Username: {{ order.name }}</p>
+
     <!-- Change date created to timezone -->
-    {% set date_created_shift = (order.dateCreated + timedelta(hours = -5)) %}
+    {% set date_created_shift = (order.date_created + timedelta(hours = -4)) %}
     {% if date_created_shift.hour < 12 %} {% set am_or_pm = "AM" %} {% else %} {% set am_or_pm = "PM" %} {% endif %}
-    <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EST</p>
+    <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EDT</p>
 
     <!-- Iterate through each item in order -->
     {% for order_content in order.content.items() %}
@@ -86,7 +89,7 @@
 
                     {% endfor %}
 
-                    <div class = "checkbox">
+                    <div class = "multiple_selection">
                         
                         <label>
 
@@ -130,19 +133,7 @@
 
     </form>
 
-    <!-- Disclaimer -->
-    <h1>Important Note</h1>
-    <h3>This is an experimental order viewing tool.</h3>
-    <form method = "GET" action = "/viewOrderNoGUI/{{ order.id }}"> <button type = "submit" class = "button">Take me back!</button> </form> 
-
-    <!-- JavaScript -->
-    <script>
-        // Make disabled items black and not gray
-        input_items = document.getElementsByTagName("input");
-
-        for (var index = 0; index < input_items.length; index++) {
-            input_items[index].style.color = "black";
-        }
-    </script>
+    <a href = "/viewOrderNoGUI/{{ order.id }}" class = "center">Old view order</a>
+    <a href = "/changeStatus/{{ order.id }}" class = "center">Change status</a>
 
 {% endblock %}

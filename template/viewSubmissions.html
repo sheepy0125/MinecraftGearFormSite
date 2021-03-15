@@ -18,6 +18,8 @@
             <th>Order ID</th>
             <th>Username</th>
             <th>Date ordered</th>
+            <th>Prioritize</th>
+            <th>Status</th>
             <th>Options</th>
         </tr>
         
@@ -26,10 +28,13 @@
             <tr>
                 <td>{{ order.id }}</td>
                 <td>{{ order.name }}</td>
-                <td>{{ (order.dateCreated + timedelta(hours = -5)).date() }}</td>
+                <td>{{ (order.date_created + timedelta(hours = -4)).date() }}</td>
+                <td>{{ order.priority }}</td>
+                <td>{{ order.status }}</td>
                 <td>
                     <form method = "GET" action = "/viewOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">View order</button> </form>
-                    <form method = "GET" action = "/removeOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">Remove order</button> </form>
+                    <form method = "GET" action = "/editOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">Edit order</button> </form>
+                    <form method = "GET" action = "/deleteOrder/{{ order.id }}"> <button type = "submit" class = "button small_button">Remove order</button> </form>
                 </td>
 
             </tr>

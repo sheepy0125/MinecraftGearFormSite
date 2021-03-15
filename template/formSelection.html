@@ -27,9 +27,9 @@
             <!-- Get each product -->
             {% for product in product_dictionary.items() %}
 
-            <p>Number of {{ product[0] }}{% if product[0][-1] != "s" %}s{% endif %} ({{ product[1]["productCost"] }} diamonds)</p>
-            <input type = "number" name = {{ product[1]["variableName"] }} min = "0" max = "{{ product[1]['maxNumberOrderable'] }}" minlength = "1" value = "0" required>
-            <br>
+                <p>Number of {{ product[0] }}{% if product[0][-1] != "s" %}s{% endif %} ({{ product[1]["productCost"] }} diamonds)</p>
+                <input type = "number" name = {{ product[1]["variableName"] }} min = "0" max = "{{ product[1]['maxNumberOrderable'] }}" minlength = "1" value = "0" required>
+                <br>
             
             {% endfor %}
             
@@ -53,36 +53,32 @@
     <script>
         // Estimated cost
 
-        // Prices based off of variable name... yeah...
-        // Note: 0 diamond products are not included
-        const prices = {
-            "swordNumber":      2,
-            "pickaxeNumber":    3,
-            "shovelNumber":     1,
-            "axeNumber":        3,
-            "hoeNumber":        2,
-            "helmetNumber":     5,
-            "chestplateNumber": 8,
-            "leggingsNumber":   7,
-            "bootsNumber":      4,
-            "elytraNumber":     15
-        }
+        // Product dictionary
+        var product_dictionary_js = {{ product_dictionary | tojson }}
+
+        console.log(product_dictionary_js);
 
         // Add event listeners so whenever user changes something it updates estimated cost
-        for (var product in prices) {
-            var productUpdate = document.getElementsByName(product);
-            productUpdate[0].addEventListener("change", get_estimated_cost)
+        for (var product in product_dictionary_js) {
+            var product_var_name = product_dictionary_js[product]["variableName"];
+            var product_update = document.getElementsByName(product_var_name);
+            product_update[0].addEventListener("change", get_estimated_cost)
+
+            console.log(product_var_name);
         }
-        
+
         // Get estimated cost
         function get_estimated_cost() {
             // Get how much ordered
             var total_cost = 5;
-            for (var product in prices) {
-                var product_cost = prices[product];
+            for (var product in product_dictionary_js) {
+                var product_var_name = product_dictionary_js[product]["variableName"];
+                var product_cost = product_dictionary_js[product]["productCost"];
+
+                console.log(product_cost);
 
                 // See how much user ordered
-                var user_ordered_num = document.getElementsByName(product)[0].value;
+                var user_ordered_num = document.getElementsByName(product_var_name)[0].value;
 
                 // Add diamonds needed
                 total_cost = total_cost + (product_cost * user_ordered_num);
