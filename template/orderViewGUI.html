@@ -42,12 +42,12 @@
             <!-- Checkboxes -->
             <br>
             
-            {% for checkboxEnchant in product_dictionary[(order_content[0][:-2])]["enchants"]["checkboxes"] %}
+            {% for checkbox_enchant in product_dictionary[(order_content[0][:-2])]["enchants"]["checkboxes"] %}
 
                 {% set match.bool = false %}
 
-                {% for selectedEnchant in order_content[1]["Enchantments"] %}
-                    {% if selectedEnchant == checkboxEnchant %}
+                {% for selected_enchant in order_content[1]["Enchantments"] %}
+                    {% if selected_enchant == checkbox_enchant %}
                         {% set match.bool = true %}
                     {% endif %}
 
@@ -57,13 +57,13 @@
 
                     <label>
 
-                        <input type = "checkbox" name = "{{ order_content[0] }} {{ checkboxEnchant }}" disabled
+                        <input type = "checkbox" name = "{{ order_content[0] }} {{ checkbox_enchant }}" disabled
                         {% if match.bool == True %}
                             checked
                         {% endif %}
                         >
 
-                        {{ checkboxEnchant }}
+                        {{ checkbox_enchant }}
 
                     </label>
                     
@@ -73,17 +73,17 @@
 
             <!-- Multiple selection -->
 
-            {% for enchantList in product_dictionary[(order_content[0][:-2])]["enchants"]["multipleSelection"] %}
+            {% for enchant_list in product_dictionary[(order_content[0][:-2])]["enchants"]["multipleSelection"] %}
 
                 <br>
 
-                {% for multipleSelectionEnchant in enchantList %}
+                {% for multiple_selection_enchant in enchant_list %}
 
                     {% set match.bool = false %}
 
-                    {% for selectedEnchant in order_content[1]["Enchantments"] %}
+                    {% for selected_enchant in order_content[1]["Enchantments"] %}
 
-                        {% if selectedEnchant == multipleSelectionEnchant %}
+                        {% if selected_enchant == multiple_selection_enchant %}
                             {% set match.bool = true %}
                         {% endif %}
 
@@ -93,13 +93,13 @@
                         
                         <label>
 
-                            <input type = "radio" name = "{{ order_content[0] }} {{ enchantList }}" disabled
+                            <input type = "radio" name = "{{ order_content[0] }} Multiple  {{ enchant_list }}" disabled
                             {% if match.bool == True %}
                                 checked
                             {% endif %}
                             >
 
-                            {{ multipleSelectionEnchant }}
+                            {{ multiple_selection_enchant }}
 
                         </label>                        
 
