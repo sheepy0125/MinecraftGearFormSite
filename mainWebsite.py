@@ -5,15 +5,25 @@ import flask
 import flask_sqlalchemy
 import datetime
 import random
+import requests
+import json
 from productDictionary import *
+
+# Get settings
+with open ("Settings.json") as settings_json_file:
+    settings_dictionary = json.load(settings_json_file)
+
+    DATABASE_NAME =     settings_dictionary["database_name"]
+    SECRET_KEY =        settings_dictionary["secret_key"]
+    WEBHOOK_URL =       settings_dictionary["webhook_url"]
+    WEBSITE_DOMAIN =    settings_dictionary["website_domain"]
 
 # Setup website
 main_website = flask.Flask(__name__, template_folder = "template")
-main_website.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///ordering.db"
+main_website.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DATABASE_NAME}"
 main_website.config["JSON_SORT_KEYS"] = False
 main_database = flask_sqlalchemy.SQLAlchemy(main_website)
-with open ("secretKey.txt") as secret_key_text:
-    main_website.secret_key = secret_key_text.read()
+main_website.secret_key = SECRET_KEY
 
 # Classes =========================================================================================
 
@@ -200,6 +210,29 @@ def form():
                 flask.flash(f"Your estimated total cost is {get_diamonds_to_stacks(order_price)}. Please go to Sheepy's base to drop off payment.")
                 flask.flash(f"Your order PIN for editing and deleting your order is {random_pin}")
 
+                # Send webhook
+                message = f"```Date ordered (GMT): {form_submission.date_created}\nPrioritize: {order_priority}\nEstimated cost: {order_content_dict['Extra']['Estimated Cost']}```\nClick [here]({WEBSITE_DOMAIN}/viewOrder/{form_submission.id}) to view the order.\n<@!246795601709105153>"
+                
+                
+                embed = {}
+                embed["title"] = f"New Order from {order_username} (#{form_submission.id})!"
+                embed["description"] = message
+                embed["color"] = 0xd74894
+
+                data_to_send = {}
+                data_to_send["username"] = "God Gear Website Alert System"
+                data_to_send["embeds"] = []
+                data_to_send["embeds"].append(embed)
+
+                result = requests.post(WEBHOOK_URL, json = data_to_send, headers = {"Content-Type": "application/json"})
+
+                try:
+                    result.raise_for_status()
+                except requests.exceptions.HTTPError as error:
+                    print(f"Error occured! {error}")
+                else:
+                    print(f"Payload delivered successfully, code {result.status_code}.")
+
             # Edit
             else:
                 form_id = flask.request.form["FormID"]
@@ -227,7 +260,6 @@ def form():
                 else:
                     return flask.redirect("/viewAllOrders")
 
-            
             return flask.redirect("/")
 
         # Still on first page
