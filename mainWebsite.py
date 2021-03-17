@@ -171,6 +171,13 @@ def form():
 
             order_price = 5
 
+            # Prioritize?
+            if "Priority" in flask.request.form:
+                order_priority = True
+                order_price += 10
+
+            else: order_priority = False
+
             # Get the product name (from "Sword 1" to "Sword")
             for product_ordered in ordered_products:
                 product_ordered = product_ordered.replace(" ", "")
@@ -184,13 +191,6 @@ def form():
 
             # Get random 4 digit PIN
             if not editing_bool: random_pin = str(random.randint(0, 9999)).zfill(4)
-            
-            # Prioritize?
-            if "Priority" in flask.request.form:
-                order_priority = True
-                order_price += 10
-
-            else: order_priority = False
 
             # Submit
             if not editing_bool:
