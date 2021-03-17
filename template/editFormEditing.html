@@ -192,7 +192,7 @@
             }
 
             new_div.innerHTML += `<!-- Make sure that the multiple selection list contains items -->`;
-            if (enchant_list != []) {
+            if (enchant_list.length != 0) {
                 new_div.innerHTML += `<br> <button type = "button" class = "button button_clear_selection" onclick = "clear_radio_group(\`${item_to_add} ${item_number} ${enchant_list}\`);">Clear selection</button>`;
             }
         }
@@ -201,7 +201,7 @@
 
         <!-- Additional information -->
         <p>Additional Information</p>
-        <input type = "text" class = "text_input">
+        <input type = "text" class = "text_input" name = "${item_to_add} ${item_number} Additional" maxlength = "60">
 
         <!-- Remove button -->
         <div class = "remove_button ${item_to_add} ${item_number}"> </div>
@@ -347,7 +347,8 @@
                                 {% endfor %}
 
                                 <!-- Make sure that the multiple selection list contains items -->
-                                {% if multiple_selection_list != [] %}
+                                {% if enchant_list != [] %}
+                                enchant_list
                                     <br> <button type = "button" class = "button button_clear_selection" onclick = "clear_radio_group(`{{ order_content[0] }} Multiple Choice {{ enchant_list }}`);">Clear selection</button>
                                 {% endif %}
 
@@ -355,7 +356,7 @@
 
                             <!-- Additional information -->
                             <p>Additional Information</p>
-                            <input type = "text" class = "text_input" name = "{{ order_content[0] }} Aditional" value = "{{ order_content[1][' Additional'] }}">
+                            <input type = "text" class = "text_input" name = "{{ order_content[0] }} Additional" value = "{{ order_content[1][' Additional'] }}" maxlength = "60">
 
                             <!-- Remove button -->
                             <div class = "remove_button {{ order_content[0] }}"> </div>
