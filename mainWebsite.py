@@ -46,11 +46,10 @@ def get_diamonds_to_stacks(amount_of_diamonds):
     return order_cost
 
 # Make sure order is valid
-def check_if_order_is_valid(order):
+def check_if_order_is_valid(order, id):
     if order is not None: return True
     else: flask.flash(f"Order ID {id} is not valid.")
-    return flask.redirect("/viewAllOrders")
-
+    return False
 # Check password
 def check_password():
     with open ("password.txt") as real_password_text:
@@ -211,18 +210,14 @@ def form():
                 flask.flash(f"Your order PIN for editing and deleting your order is {random_pin}")
 
                 # Send webhook
-                message = f"```Date ordered (GMT): {form_submission.date_created}\nPrioritize: {order_priority}\nEstimated cost: {order_content_dict['Extra']['Estimated Cost']}```\nClick [here]({WEBSITE_DOMAIN}/viewOrder/{form_submission.id}) to view the order.\n<@!246795601709105153>"
-                
-                
-                embed = {}
-                embed["title"] = f"New Order from {order_username} (#{form_submission.id})!"
-                embed["description"] = message
-                embed["color"] = 0xd74894
-
-                data_to_send = {}
-                data_to_send["username"] = "God Gear Website Alert System"
-                data_to_send["embeds"] = []
-                data_to_send["embeds"].append(embed)
+                data_to_send = {
+                    "username": "God Gear Website Alert System",
+                    "embeds": [{
+                        "title": f"New Order from {order_username} (#{form_submission.id})!",
+                        "description": f"```Date ordered (GMT): {form_submission.date_created}\nPrioritize: {order_priority}\nEstimated cost: {order_content_dict['Extra']['Estimated Cost']}```\nClick [here]({WEBSITE_DOMAIN}/viewOrder/{form_submission.id}) to view the order.\n<@!246795601709105153>",
+                        "color": 0xd74894,
+                    }]
+                }
 
                 result = requests.post(WEBHOOK_URL, json = data_to_send, headers = {"Content-Type": "application/json"})
 
@@ -319,18 +314,20 @@ def get_raw_data(id):
 def view_order(id):
     order = FormOrders.query.filter_by(id = id).first()
 
-    if check_if_order_is_valid(order):
-        # Try to show GUI
-        try: return flask.render_template("orderViewGUI.html", order = order, timedelta = datetime.timedelta, product_dictionary = product_dictionary)
-        # Failed, so revert to old
-        except Exception: flask.flash("There was an error accessing the new view order page.")
-        return flask.redirect(f"/viewOrderNoGUI/{id}")
+    if not check_if_order_is_valid(order = order, id = id): return flask.redirect("/viewAllOrders")
+
+    # Try to show GUI
+    try: return flask.render_template("orderViewGUI.html", order = order, timedelta = datetime.timedelta, product_dictionary = product_dictionary)
+    # Failed, so revert to old
+    except Exception: flask.flash("There was an error accessing the new view order page.")
+    return flask.redirect(f"/viewOrderNoGUI/{id}")
 
 # View order (NO GUI)
 @main_website.route("/viewOrderNoGUI/<int:id>")
 def view_order_no_gui(id):
     order = FormOrders.query.filter_by(id = id).first()
-    if check_if_order_is_valid(order): return flask.render_template("orderView.html", order = order, timedelta = datetime.timedelta)
+    if check_if_order_is_valid(order = order, id = id): return flask.render_template("orderView.html", order = order, timedelta = datetime.timedelta)
+    else: return flask.redirect("/viewAllOrders")
 
 # Delete order password entered
 @main_website.route("/deleteOrder/<int:id>", methods = ["POST", "GET"])
@@ -372,7 +369,8 @@ def delete_order(id):
             flask.flash(f"Password {password_inputted} is not correct. Nice try.")
 
     order = FormOrders.query.filter_by(id = id).first()
-    if check_if_order_is_valid(order): return flask.render_template("removeSubmission.html", order = order)
+    if check_if_order_is_valid(order = order, id = id): return flask.render_template("removeSubmission.html", order = order)
+    else: return flask.redirect("/viewAllOrders")
 
 # Edit order
 @main_website.route("/editOrder/<int:id>", methods = ["POST", "GET"])
@@ -381,7 +379,7 @@ def edit_order(id):
     order = FormOrders.query.filter_by(id = id).first()
 
     # Make sure order is allowed to be edited
-    if order_can_be_edited(order) and check_if_order_is_valid(order):
+    if order_can_be_edited(order) and check_if_order_is_valid(order = order, id = id):
         # If on password screen (GET request)
         if flask.request.method == "GET": return flask.render_template("editFormPasswordScreen.html", order = order)
 
@@ -403,7 +401,7 @@ def edit_order(id):
 def change_status(id):
     # Get order
     order = FormOrders.query.filter_by(id = id).first()
-    check_if_order_is_valid(order)
+    if not check_if_order_is_valid(order = order, id = id): return flask.redirect("/")
 
     # If submitted change
     if flask.request.method == "POST":
