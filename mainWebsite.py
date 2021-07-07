@@ -93,6 +93,11 @@ def internal_server_error(error):
 
 # Pages ===========================================================================================
 
+# Robots.txt page
+@main_website.route("/robots.txt")
+def robots_page():
+    return flask.send_from_directory(main_website.static_folder, flask.request.path[1:])
+
 # Index page
 @main_website.route("/")
 def index():
@@ -427,4 +432,4 @@ def change_status(id):
 if __name__ == "__main__":
     main_website.run(debug = True)
     # main_website.run(debug = False)
-    # main_website.run(host = "0.0.0.0", port = 6969)
+    # main_website.run(host = "0.0.0.0", port = 80)
