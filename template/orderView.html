@@ -23,7 +23,7 @@
     <p>Username: {{ order.name }}</p>
 
     <!-- Change date created to timezone -->
-    {% set date_created_shift = (order.date_created + timedelta(hours = -4)) %}
+    {% set date_created_shift = (order.date_created + timedelta(hours = -5)) %}
     {% if date_created_shift.hour < 12 %} {% set am_or_pm = "AM" %} {% else %} {% set am_or_pm = "PM" %} {% endif %}
     <p>Ordered on {{ date_created_shift.date() }} at {% if am_or_pm == "AM" %}{{ date_created_shift.hour }}{% else %}{% if date_created_shift.hour - 12 == 0 %}12{% else %}{{ date_created_shift.hour - 12 }}{% endif %}{% endif %}:{% if (date_created_shift.minute / 10) < 1 %}0{% endif %}{{ date_created_shift.minute }} {{ am_or_pm }} EDT</p>
     
